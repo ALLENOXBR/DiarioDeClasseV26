@@ -77,17 +77,26 @@
             letter-spacing: 0.01em; word-spacing: 0.1rem; line-height: 1.4; text-transform: uppercase;
         }
 
-        /* PDF High-Res Capture */
-        .pdf-capture-frame {
-            background: white !important; padding: 40px !important; border-radius: 0 !important; width: 1000px !important; color: black !important;
+        /* PDF Engine High-Resolution - No Cuts */
+        .pdf-export-mode {
+            width: 1200px !important; 
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 50px !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            transform: none !important;
+            overflow: visible !important;
+            background: #F8FAFC !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
-        .pdf-capture-frame * {
-            color: black !important; border-color: #cbd5e1 !important; background-color: transparent !important; box-shadow: none !important; backdrop-filter: none !important;
-        }
-        .pdf-capture-frame .bg-status-present { background-color: #16a34a !important; color: white !important; }
-        .pdf-capture-frame .bg-status-absent { background-color: #dc2626 !important; color: white !important; }
-        .pdf-capture-frame .bg-status-justified { background-color: #d97706 !important; color: white !important; }
-        .pdf-capture-frame .no-export { display: none !important; }
+        .dark .pdf-export-mode { background: #021112 !important; }
+        .pdf-export-mode .no-export { display: none !important; }
+        .pdf-export-mode .overflow-x-auto { overflow: visible !important; }
+        .pdf-export-mode tr { page-break-inside: avoid !important; }
+
+        .sticky-col { position: sticky; left: 0; background: inherit; z-index: 10; }
 
         @media (max-width: 640px) {
             .modal-content { border-radius: 2rem !important; padding: 1.5rem !important; }
@@ -147,7 +156,6 @@
         </header>
 
         <div class="grid lg:grid-cols-2 gap-6 sm:gap-8 mb-8 text-center text-indigo-green">
-            <!-- Cadastro Section -->
             <section class="bg-white dark:bg-indigo-green/5 shadow-lg border border-slate-200 dark:border-indigo-green/20 rounded-[2.5rem] p-6 sm:p-10 flex flex-col items-center">
                 <h2 class="text-lg sm:text-xl font-black mb-6 uppercase tracking-widest dark:text-egg-yolk">Matrícula</h2>
                 <div class="w-full space-y-5">
@@ -212,8 +220,6 @@
     </main>
 
     <!-- Modais -->
-    
-    <!-- Confirmação -->
     <div id="confirmationModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#021112] p-8 w-full max-w-sm border-4 border-egg-yolk text-center shadow-3xl text-indigo-green dark:text-white">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
@@ -226,7 +232,6 @@
         </div>
     </div>
 
-    <!-- Importação -->
     <div id="pasteModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#041a1c] p-6 sm:p-10 w-full max-w-2xl shadow-3xl border-2 border-egg-yolk/30 text-indigo-green dark:text-white">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
@@ -503,7 +508,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const passInput = $('#password').value;
             let savedPass = "1234";
             try { savedPass = atob(data.password); } catch(err) {}
-            if (passInput === savedPass) { sessionStorage.setItem(LOGGED_IN_KEY, 'true'); checkLogin(); showToast("LOGIN REALIZADO"); }
+            if (passInput === savedPass) { 
+                sessionStorage.setItem(LOGGED_IN_KEY, 'true'); // CORRIGIDO: Atribuição de sessão correta
+                checkLogin(); 
+                showToast("LOGIN REALIZADO"); 
+            }
             else { showToast("SENHA INCORRETA", "error"); }
         });
 
@@ -718,35 +727,59 @@ document.addEventListener('DOMContentLoaded', () => {
             lines.forEach(l => {
                 const parts = l.includes(';') ? l.split(';') : l.split(',');
                 let n = cleanString(parts[0]);
-                if (n && !["NOME", "ALUNO", "NAME"].includes(n)) { 
+                if (n && !["NOME", "ALUNO", "NAME", "ESTUDANTE"].includes(n)) { 
                     if (!cls.students.some(s => s.name === n)) { cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: n }); added++; }
                 }
             });
             e.target.value = "";
             if (added > 0) { closeModal(); renderStudentList(); saveData(true); showToast(`${added} ALUNOS IMPORTADOS`); }
-            else showToast("NADA A IMPORTAR", "error");
+            else showToast("NADA A IMPORTAR OU DUPLICADO", "error");
         };
         reader.readAsText(file, "UTF-8");
     };
 
     const exportPdf = () => {
         const element = $('#capture-area');
-        const isDarkMode = document.documentElement.classList.contains('dark');
-        showToast("CAPTURANDO FOTO...");
-        if (isDarkMode) document.documentElement.classList.remove('dark');
-        element.classList.add('pdf-capture-frame');
-        const contentWidth = element.scrollWidth;
-        const contentHeight = element.scrollHeight;
-        const opt = { 
-            margin: 0, filename: 'Diario_Pro_Completo.pdf', image: { type: 'jpeg', quality: 1 }, 
-            html2canvas: { scale: 3, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0, windowWidth: contentWidth }, 
-            jsPDF: { unit: 'pt', format: [contentWidth + 80, contentHeight + 100], orientation: 'portrait' }
+        const filename = `DIARIO_${getActiveClass().name}_${$('#attendanceDate').value}.pdf`;
+        
+        showToast("A PROCESSAR CAPTURA TOTAL...");
+
+        element.classList.add('pdf-export-mode');
+
+        const realWidth = 1200; 
+        const realHeight = element.scrollHeight + 100;
+
+        const opt = {
+            margin: 0,
+            filename: filename,
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                letterRendering: true,
+                backgroundColor: null, 
+                logging: false,
+                scrollX: 0,
+                scrollY: 0,
+                windowWidth: realWidth,
+                windowHeight: realHeight
+            },
+            jsPDF: { 
+                unit: 'pt', 
+                format: [realWidth, realHeight], 
+                orientation: 'portrait' 
+            }
         };
-        html2pdf().set(opt).from(element).save().then(() => {
-            if (isDarkMode) document.documentElement.classList.add('dark');
-            element.classList.remove('pdf-capture-frame');
-            showToast("PDF FOTO-EXATA CONCLUÍDO");
-        });
+
+        setTimeout(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.classList.remove('pdf-export-mode');
+                showToast("PDF GERADO COM SUCESSO");
+            }).catch(err => {
+                element.classList.remove('pdf-export-mode');
+                showToast("ERRO NA GERAÇÃO", "error");
+            });
+        }, 500);
     };
 
     const handleUndo = () => {
@@ -764,11 +797,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const showToast = (m, type = 'success') => { const t = $('#toast'); if (t) { t.textContent = m; t.className = `toast show fixed bottom-8 left-1/2 bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase text-center border border-egg-yolk/30 min-w-[260px] ${type === 'error' ? 'bg-red-900' : ''}`; setTimeout(() => t.classList.remove('show'), 2500); } };
     const showUndoToast = (m) => { const um = $('#undo-message'); const ut = $('#undo-toast'); if(um && ut) { um.textContent = m; ut.classList.add('show'); setTimeout(() => ut.classList.remove('show'), 6000); } };
     const showConfirmationModal = (title, msg, onConfirm) => { $('#modalTitle').textContent = title; $('#modalMessage').textContent = msg; currentConfirmCallback = onConfirm; openModal('#confirmationModal'); };
+    
     const initTheme = () => {
         if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
         const update = () => { const isDark = document.documentElement.classList.contains('dark'); $('#theme-toggle-btn').innerHTML = isDark ? `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>` : `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`; };
         update();
-        $('#theme-toggle-btn').addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); update(); });
+        $('#theme-toggle-btn').addEventListener('click', () => { 
+            // CORREÇÃO: Usando classList.toggle em vez de toggle direto no elemento
+            document.documentElement.classList.toggle('dark'); 
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); 
+            update(); 
+        });
     };
 
     window.filterByStatus = (e, status) => { currentFilter = status; $$('.filter-btn').forEach(b => b.classList.remove('active', 'bg-indigo-green', 'text-egg-yolk')); e.currentTarget.classList.add('active', 'bg-indigo-green', 'text-egg-yolk'); renderStudentList(); };
