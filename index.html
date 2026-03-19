@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Diário de Classe Pro | V52 Master Edition</title>
+    <title>Diário de Classe Pro | V53 Ultimate Edition</title>
     
     <link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%23FFB800'/%3E%3Cpath d='M30 35h40M30 50h40M30 65h25' stroke='%230D5C63' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -40,15 +40,20 @@
         
         /* Modais */
         .modal-backdrop { 
-            opacity: 0; visibility: hidden; transition: all 0.2s ease; 
+            opacity: 0; visibility: hidden; transition: all 0.25s ease; 
             z-index: 1000; position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-            padding: 1rem; background-color: rgba(13, 92, 99, 0.9); backdrop-filter: blur(6px);
+            padding: 1rem; background-color: rgba(13, 92, 99, 0.9); backdrop-filter: blur(8px);
         }
         .modal-backdrop.active { opacity: 1; visibility: visible; }
+        
         #confirmationModal { z-index: 3000 !important; }
         #login-screen { z-index: 5000 !important; }
 
-        .modal-content { transform: scale(0.95) translateY(10px); transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 92vh; width: 100%; overflow-y: auto; border-radius: 2.5rem; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .modal-content { 
+            transform: scale(0.95) translateY(10px); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            max-height: 92vh; width: 100%; overflow-y: auto; border-radius: 2.5rem; position: relative; 
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
         .modal-backdrop.active .modal-content { transform: scale(1) translateY(0); }
         
         .close-icon-btn { position: absolute; top: 1.5rem; right: 1.5rem; padding: 0.5rem; border-radius: 1rem; color: #94a3b8; transition: all 0.2s; border: none; background: transparent; cursor: pointer; z-index: 20; }
@@ -56,9 +61,10 @@
         .dark .close-icon-btn:hover { background-color: rgba(255,255,255,0.05); }
 
         /* Toasts */
-        .toast { opacity: 0; transform: translate(-50%, 20px); transition: all 0.3s ease; visibility: hidden; z-index: 6000; position: fixed; bottom: 2rem; left: 50%; }
+        .toast { opacity: 0; transform: translate(-50%, 20px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); visibility: hidden; z-index: 6000; position: fixed; bottom: 2rem; left: 50%; }
         .toast.show { opacity: 1; transform: translate(-50%, 0); visibility: visible; }
 
+        .status-btn { transition: all 0.2s ease; }
         .status-btn.active-P { background-color: #16a34a; color: white; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); border-color: transparent; }
         .status-btn.active-F { background-color: #dc2626; color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); border-color: transparent; }
         .status-btn.active-J { background-color: #d97706; color: white; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); border-color: transparent; }
@@ -71,12 +77,12 @@
             letter-spacing: 0.01em; word-spacing: 0.1rem; line-height: 1.4; text-transform: uppercase;
         }
 
-        /* PDF Capture Mode */
+        /* PDF High-Res Capture */
         .pdf-capture-frame {
             background: white !important; padding: 40px !important; border-radius: 0 !important; width: 1000px !important; color: black !important;
         }
         .pdf-capture-frame * {
-            color: black !important; border-color: #ccc !important; box-shadow: none !important; backdrop-filter: none !important;
+            color: black !important; border-color: #cbd5e1 !important; background-color: transparent !important; box-shadow: none !important; backdrop-filter: none !important;
         }
         .pdf-capture-frame .bg-status-present { background-color: #16a34a !important; color: white !important; }
         .pdf-capture-frame .bg-status-absent { background-color: #dc2626 !important; color: white !important; }
@@ -85,7 +91,7 @@
 
         @media (max-width: 640px) {
             .modal-content { border-radius: 2rem !important; padding: 1.5rem !important; }
-            .status-btn { width: 2.2rem !important; height: 2.2rem !important; font-size: 8px !important; }
+            .status-btn { width: 2.1rem !important; height: 2.1rem !important; font-size: 8px !important; }
         }
     </style>
 </head>
@@ -99,18 +105,18 @@
                     <svg class="w-10 h-10 text-indigo-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <h2 class="text-3xl font-black text-indigo-green dark:text-egg-yolk tracking-tighter uppercase">Diário Pro</h2>
-                <p class="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Segurança Ativa</p>
+                <p class="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Senha de Fábrica: 1234</p>
             </div>
             <form id="login-form">
                 <div class="mb-6">
                     <input type="password" id="password" autocomplete="current-password" placeholder="SENHA" class="w-full py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 focus:outline-none focus:border-egg-yolk transition-all text-center font-black tracking-[0.5em] text-indigo-green dark:text-white text-lg">
                 </div>
-                <button type="submit" class="w-full bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl transition shadow-xl active:scale-95 uppercase tracking-widest text-sm">Entrar</button>
+                <button type="submit" class="w-full bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl transition shadow-xl active:scale-95 uppercase tracking-widest text-sm">Aceder</button>
             </form>
         </div>
     </div>
 
-    <!-- Main App -->
+    <!-- Main View -->
     <main class="container mx-auto px-3 sm:px-4 py-6 md:py-12 max-w-5xl hidden opacity-0 transition-opacity duration-1000" id="main-content">
         
         <header class="glass bg-white/80 dark:bg-indigo-green/10 shadow-xl border border-slate-200 dark:border-indigo-green/20 rounded-[2.5rem] p-5 sm:p-8 mb-6 sm:mb-10 text-center relative overflow-hidden">
@@ -127,14 +133,13 @@
                 </div>
                 <nav class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                     <button id="diary-btn" title="Matriz" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10 shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
-                    <button id="charts-btn" title="Performance" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10 shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></button>
+                    <button id="charts-btn" title="Desempenho" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10 shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></button>
                     <button id="reports-btn" title="Relatórios" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10 shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
                     <div class="w-px h-8 bg-slate-200 dark:bg-indigo-green/30 mx-1"></div>
                     <button id="settings-btn" title="Ajustes" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-grad-yolk transition-all border border-slate-100 dark:border-white/10 shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
                     <button id="logout-btn" title="Sair" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-red-500 hover:bg-red-50 transition-all shadow-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
                 </nav>
             </div>
-            
             <div class="mt-8 pt-6 border-t border-slate-100 dark:border-indigo-green/20 flex flex-col items-center gap-3">
                 <input type="date" id="attendanceDate" class="w-full max-w-xs py-3.5 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 font-black focus:border-egg-yolk transition-all outline-none text-center text-indigo-green dark:text-white shadow-inner">
                 <div id="currentTime" class="text-[10px] font-black bg-grad-indigo text-egg-yolk py-2 px-8 rounded-full shadow-lg border border-egg-yolk/20 uppercase tracking-widest"></div>
@@ -142,17 +147,18 @@
         </header>
 
         <div class="grid lg:grid-cols-2 gap-6 sm:gap-8 mb-8 text-center text-indigo-green">
+            <!-- Cadastro Section -->
             <section class="bg-white dark:bg-indigo-green/5 shadow-lg border border-slate-200 dark:border-indigo-green/20 rounded-[2.5rem] p-6 sm:p-10 flex flex-col items-center">
                 <h2 class="text-lg sm:text-xl font-black mb-6 uppercase tracking-widest dark:text-egg-yolk">Matrícula</h2>
                 <div class="w-full space-y-5">
                     <div class="flex gap-2 w-full">
-                        <input type="text" id="studentName" placeholder="NOME DO ALUNO" class="flex-grow py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk transition-all font-bold text-center uppercase text-sm shadow-inner dark:text-white">
+                        <input type="text" id="studentName" placeholder="NOME DO ALUNO" class="flex-grow py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk font-bold text-center uppercase text-sm shadow-inner dark:text-white">
                         <button id="addStudentBtn" class="bg-grad-yolk text-indigo-green font-black px-6 rounded-2xl active:scale-95 transition-all shadow-lg"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
                     </div>
                     <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
-                        <button id="manage-classes-btn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest shadow-xl hover:brightness-110">Turmas</button>
-                        <button id="pasteListBtn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest shadow-xl hover:brightness-110">Importar</button>
-                        <button id="deleteAllStudentsBtn" class="bg-red-500/10 text-red-500 font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest border border-red-500/20 hover:bg-red-600 hover:text-white">Zerar</button>
+                        <button id="manage-classes-btn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase shadow-xl">Turmas</button>
+                        <button id="pasteListBtn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase shadow-xl">Importar</button>
+                        <button id="deleteAllStudentsBtn" class="bg-red-500/10 text-red-500 font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase border border-red-500/20">Zerar</button>
                     </div>
                 </div>
             </section>
@@ -162,12 +168,13 @@
                 <div class="grid grid-cols-2 gap-2 sm:gap-3 w-full">
                     <button id="markAllPresentBtn" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest border border-egg-yolk-dark/20">Todos (P)</button>
                     <button id="markAbsenteesBtn" class="bg-red-600 text-white font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest">Faltas (F)</button>
-                    <button id="clearAllBtn" class="bg-grad-indigo text-egg-yolk font-black py-4 rounded-2xl transition-all shadow-lg text-[10px] uppercase tracking-widest border border-white/5">Limpar</button>
-                    <button id="exportPdfBtn" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest border border-egg-yolk-dark/20">Baixar PDF</button>
+                    <button id="clearAllBtn" class="bg-grad-indigo text-egg-yolk font-black py-4 rounded-2xl transition-all shadow-lg text-[10px] uppercase tracking-widest">Limpar</button>
+                    <button id="exportPdfBtn" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest">Gerar PDF</button>
                 </div>
             </section>
         </div>
 
+        <!-- Lista -->
         <section id="capture-area" class="bg-white dark:bg-indigo-green/10 shadow-2xl border border-slate-200 dark:border-indigo-green/20 rounded-[3rem] overflow-hidden mb-12">
             <div class="p-6 sm:p-10 border-b border-slate-100 dark:border-indigo-green/20 text-center">
                 <div class="flex flex-col items-center gap-5 sm:gap-6 text-indigo-green">
@@ -199,37 +206,67 @@
                     </thead>
                     <tbody id="studentList" class="divide-y divide-slate-100 dark:divide-indigo-green/10"></tbody>
                 </table>
-                <div id="empty-state" class="hidden p-20 text-center text-slate-300 font-black text-xs uppercase tracking-widest italic">Nenhum registo encontrado</div>
+                <div id="empty-state" class="hidden p-20 text-center text-slate-300 font-black text-xs uppercase tracking-widest italic">Sem alunos na turma</div>
             </div>
         </section>
     </main>
 
-    <!-- Modais Repostos Individualmente -->
+    <!-- Modais -->
+    
+    <!-- Confirmação -->
     <div id="confirmationModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#021112] p-8 w-full max-w-sm border-4 border-egg-yolk text-center shadow-3xl text-indigo-green dark:text-white">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-            <h3 class="text-xl sm:text-2xl font-black mb-4 uppercase" id="modalTitle">Confirmar</h3>
-            <p class="text-slate-500 dark:text-white/50 mb-10 font-bold text-sm" id="modalMessage"></p>
+            <h3 class="text-xl sm:text-2xl font-black mb-4 uppercase tracking-tighter dark:text-egg-yolk" id="modalTitle">Confirmar</h3>
+            <p class="text-slate-500 dark:text-white/50 mb-10 leading-relaxed font-bold text-sm" id="modalMessage"></p>
             <div class="flex flex-col gap-3">
-                <button id="confirmButton" class="bg-grad-yolk text-indigo-green font-black py-4.5 rounded-2xl shadow-xl uppercase text-[11px] active:scale-95 transition-all">Sim, Confirmar</button>
+                <button id="confirmButton" class="bg-grad-yolk text-indigo-green font-black py-4.5 rounded-2xl shadow-xl uppercase text-[11px] active:scale-95 transition-all">Confirmar Operação</button>
                 <button class="modal-close-btn bg-slate-100 dark:bg-white/5 text-slate-400 font-black py-3.5 rounded-2xl uppercase text-[9px] hover:text-indigo-green transition-all">Cancelar</button>
             </div>
         </div>
     </div>
 
+    <!-- Importação -->
+    <div id="pasteModal" class="modal-backdrop">
+        <div class="modal-content bg-white dark:bg-[#041a1c] p-6 sm:p-10 w-full max-w-2xl shadow-3xl border-2 border-egg-yolk/30 text-indigo-green dark:text-white">
+            <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <h3 class="text-2xl sm:text-3xl font-black mb-6 uppercase text-center dark:text-egg-yolk">Importação</h3>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="space-y-4">
+                    <textarea id="pasteTextarea" class="w-full h-48 p-5 border-2 border-slate-100 dark:border-white/10 rounded-[2rem] bg-slate-50 dark:bg-black/40 outline-none focus:border-egg-yolk font-bold text-xs uppercase text-black dark:text-white shadow-inner" placeholder="COLE OS NOMES AQUI..."></textarea>
+                    <div class="bg-indigo-green/5 dark:bg-white/5 border-2 border-dashed border-indigo-green/20 p-5 rounded-[2rem] text-center">
+                        <label class="cursor-pointer block"><span class="text-[10px] font-black text-indigo-green dark:text-egg-yolk uppercase">Carregar .CSV</span><input type="file" id="importCsvInput" class="hidden" accept=".csv"></label>
+                    </div>
+                </div>
+                <div class="bg-slate-50 dark:bg-black/30 p-8 rounded-[2.5rem] border border-slate-100 dark:border-white/5 text-center">
+                    <h4 class="text-[11px] font-black uppercase mb-4 tracking-widest dark:text-egg-yolk">Dicas:</h4>
+                    <ul class="text-[10px] space-y-4 font-bold text-slate-500 dark:text-slate-400 text-left">
+                        <li>• Nome Completo na 1ª Coluna</li>
+                        <li>• Use ponto e vírgula (;)</li>
+                        <li>• Organização de A a Z automática</li>
+                    </ul>
+                    <button id="downloadTemplateBtn" class="w-full py-3 bg-white dark:bg-white/10 border border-egg-yolk/30 rounded-xl text-[9px] font-black text-indigo-green dark:text-egg-yolk hover:bg-egg-yolk hover:text-white mt-6 uppercase">Baixar Exemplo</button>
+                </div>
+            </div>
+            <button id="confirmPasteButton" class="bg-grad-yolk text-indigo-green font-black py-4 w-full rounded-2xl shadow-xl uppercase text-xs active:scale-95 transition-all">Importar Lista Agora</button>
+        </div>
+    </div>
+
+    <!-- Relatórios -->
     <div id="reportsModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#021112] p-8 w-full max-w-4xl max-h-[90vh] flex flex-col shadow-3xl text-indigo-green dark:text-white border border-white/5">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-            <h3 class="text-2xl font-black mb-8 text-center uppercase dark:text-egg-yolk">Relatório de Assiduidade</h3>
+            <h3 class="text-2xl font-black mb-8 text-center uppercase dark:text-egg-yolk">Frequência da Turma</h3>
             <div id="reports-content" class="flex-grow overflow-y-auto custom-scrollbar border-2 border-slate-50 dark:border-white/5 rounded-3xl bg-slate-50/30 dark:bg-black/20 shadow-inner"></div>
         </div>
     </div>
 
+    <!-- Matriz (Diário) -->
     <div id="diaryModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#021112] p-8 w-full max-w-[98vw] h-full max-h-[95vh] flex flex-col shadow-3xl text-indigo-green dark:text-white border border-white/5">
             <button class="modal-close-btn close-icon-btn"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
             <div class="flex flex-col items-center mb-8">
-                <h3 class="text-2xl font-black uppercase dark:text-egg-yolk">Matriz Mensal</h3>
+                <h3 class="text-2xl font-black uppercase dark:text-egg-yolk">Matriz Escolar</h3>
                 <div class="flex items-center gap-6 bg-indigo-green p-3 rounded-full mt-4 shadow-xl">
                     <button id="prev-month-btn" class="p-2 bg-white/10 rounded-full text-white font-black">&lt;</button>
                     <span id="diary-month-year" class="text-white font-black uppercase text-xs min-w-[150px] text-center"></span>
@@ -240,32 +277,16 @@
         </div>
     </div>
 
+    <!-- Gráficos -->
     <div id="chartsModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#021112] p-12 w-full max-w-md text-center border-4 border-egg-yolk shadow-3xl text-indigo-green dark:text-white">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-            <h3 class="text-2xl font-black mb-8 uppercase dark:text-egg-yolk">Análise de Performance</h3>
+            <h3 class="text-2xl font-black mb-8 uppercase dark:text-egg-yolk text-indigo-green">Análise Global</h3>
             <div class="relative h-64 flex items-center justify-center"><canvas id="attendance-chart"></canvas></div>
         </div>
     </div>
 
-    <div id="settingsModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#041a1c] p-12 w-full max-w-lg text-center border-2 border-indigo-green/10 shadow-3xl text-indigo-green dark:text-white">
-            <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-            <h3 class="text-2xl font-black mb-10 uppercase dark:text-egg-yolk">Definições</h3>
-            <div class="space-y-8">
-                <div class="bg-black/10 dark:bg-white/5 p-6 rounded-3xl border border-white/5">
-                    <label class="block text-[10px] font-black text-slate-400 mb-4 uppercase">Senha de Acesso</label>
-                    <input type="password" id="newPassword" placeholder="NOVA SENHA" class="w-full py-4 bg-transparent border-b-2 border-indigo-green/20 text-center font-black tracking-[0.5em] text-xl outline-none focus:border-egg-yolk">
-                </div>
-                <div class="pt-8 border-t dark:border-white/10 flex flex-col gap-4">
-                    <button id="exportDataBtn" class="w-full bg-slate-100 dark:bg-white/5 text-indigo-green dark:text-egg-yolk font-black py-4 rounded-2xl text-xs uppercase shadow-sm">Exportar Backup</button>
-                    <label class="w-full bg-indigo-green text-egg-yolk font-black py-4 rounded-2xl text-xs uppercase flex items-center justify-center cursor-pointer shadow-xl">Importar Backup<input type="file" id="importDataInput" class="hidden" accept=".json"></label>
-                </div>
-                <button id="saveSettingsBtn" class="bg-grad-yolk text-indigo-green font-black py-4 w-full rounded-2xl shadow-xl uppercase text-xs mt-4 active:scale-95 transition-all">Guardar Alterações</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Turmas -->
     <div id="manageClassesModal" class="modal-backdrop">
         <div class="modal-content bg-white dark:bg-[#041a1c] p-10 w-full max-w-lg text-center flex flex-col max-h-[90vh] shadow-3xl text-indigo-green dark:text-white border-2 border-indigo-green/20">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
@@ -278,32 +299,26 @@
         </div>
     </div>
 
-    <div id="pasteModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#041a1c] p-10 w-full max-w-2xl shadow-3xl text-indigo-green dark:text-white border-2 border-egg-yolk/30">
+    <!-- Ajustes -->
+    <div id="settingsModal" class="modal-backdrop">
+        <div class="modal-content bg-white dark:bg-[#041a1c] p-12 w-full max-w-lg text-center border-2 border-indigo-green/10 shadow-3xl text-indigo-green dark:text-white">
             <button class="modal-close-btn close-icon-btn"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-            <h3 class="text-2xl font-black mb-8 uppercase text-center dark:text-egg-yolk">Importar Lista</h3>
-            <div class="grid md:grid-cols-2 gap-8 mb-10">
-                <div class="space-y-4">
-                    <textarea id="pasteTextarea" class="w-full h-48 p-5 border-2 border-slate-100 dark:border-white/10 rounded-[2rem] bg-slate-50 dark:bg-black/40 outline-none focus:border-egg-yolk font-bold text-xs uppercase text-black dark:text-white shadow-inner" placeholder="COLE OS NOMES AQUI..."></textarea>
-                    <div class="bg-indigo-green/5 dark:bg-white/5 border-2 border-dashed border-indigo-green/20 p-5 rounded-[2rem] text-center shadow-inner">
-                        <label class="cursor-pointer block"><span class="text-[10px] font-black text-indigo-green dark:text-egg-yolk uppercase">Carregar arquivo .CSV</span><input type="file" id="importCsvInput" class="hidden" accept=".csv"></label>
-                    </div>
+            <h3 class="text-2xl font-black mb-10 uppercase dark:text-egg-yolk">Definições</h3>
+            <div class="space-y-8">
+                <div class="bg-black/10 dark:bg-white/5 p-6 rounded-3xl border border-white/5">
+                    <label class="block text-[10px] font-black text-slate-400 mb-4 uppercase">Senha de Acesso</label>
+                    <input type="password" id="newPassword" placeholder="DIGITE A NOVA SENHA" class="w-full py-4 bg-transparent border-b-2 border-indigo-green/20 text-center font-black tracking-[0.5em] text-xl outline-none focus:border-egg-yolk">
                 </div>
-                <div class="bg-slate-50 dark:bg-black/30 p-8 rounded-[2.5rem] border border-slate-100 dark:border-white/5 text-center">
-                    <h4 class="text-[11px] font-black uppercase mb-4 tracking-widest dark:text-egg-yolk">Ajuda:</h4>
-                    <ul class="text-[10px] space-y-4 font-bold text-slate-500 dark:text-slate-400 text-left">
-                        <li>• Nome Completo na 1ª Coluna</li>
-                        <li>• Separador Ponto e Vírgula (;)</li>
-                        <li>• O app organiza por A-Z sozinho</li>
-                    </ul>
-                    <button id="downloadTemplateBtn" class="w-full py-3 bg-white dark:bg-white/10 border border-egg-yolk/30 rounded-xl text-[9px] font-black text-indigo-green dark:text-egg-yolk hover:bg-egg-yolk mt-6 uppercase">Exemplo CSV</button>
+                <div class="pt-8 border-t dark:border-white/10 flex flex-col gap-4">
+                    <button id="exportDataBtn" class="w-full bg-slate-100 dark:bg-white/5 text-indigo-green dark:text-egg-yolk font-black py-4 rounded-2xl text-xs uppercase shadow-sm">Exportar Backup</button>
+                    <label class="w-full bg-indigo-green text-egg-yolk font-black py-4 rounded-2xl text-xs uppercase flex items-center justify-center cursor-pointer shadow-xl">Importar Backup<input type="file" id="importDataInput" class="hidden" accept=".json"></label>
                 </div>
+                <button id="saveSettingsBtn" class="bg-grad-yolk text-indigo-green font-black py-4 w-full rounded-2xl shadow-xl uppercase text-xs mt-4 active:scale-95 transition-all">Guardar Alterações</button>
             </div>
-            <button id="confirmPasteButton" class="bg-grad-yolk text-indigo-green font-black py-4 w-full rounded-2xl shadow-xl uppercase text-xs active:scale-95 transition-all">Confirmar Importação</button>
         </div>
     </div>
 
-    <!-- UI Feedback -->
+    <!-- UI Feedback Elementos -->
     <div id="toast" class="toast glass bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase text-center border-2 border-egg-yolk/30 min-w-[260px]"></div>
     <div id="undo-toast" class="toast glass bg-indigo-green text-white py-5 px-10 rounded-[2.5rem] shadow-2xl flex items-center justify-between gap-10 font-black text-[10px] uppercase border border-white/10 min-w-[320px]"><span id="undo-message" class="text-white/40"></span><button id="undo-btn" class="text-egg-yolk hover:scale-105 transition-all underline underline-offset-8">Desfazer</button></div>
 
@@ -312,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
 
-    const APP_STORAGE_KEY = 'diario_classe_v52_master';
-    const LOGGED_IN_KEY = 'auth_v52_stable';
+    const APP_STORAGE_KEY = 'diario_pro_v53_ultimate';
+    const LOGGED_IN_KEY = 'auth_v53_ok';
     const DEFAULT_PASSWORD = '1234';
 
     const STATUSES = {
@@ -343,9 +358,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadData = () => {
         const stored = localStorage.getItem(APP_STORAGE_KEY);
-        data = stored ? JSON.parse(stored) : { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
-        if (!data.classes) data.classes = [];
-        if (!data.password) data.password = btoa(DEFAULT_PASSWORD);
+        try {
+            data = stored ? JSON.parse(stored) : { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
+            if (!data.classes) data.classes = [];
+            if (!data.password) data.password = btoa(DEFAULT_PASSWORD);
+        } catch(e) {
+            data = { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
+        }
     };
 
     const saveData = (immediate = false) => {
@@ -420,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = records[s.id] || '';
             html += `
                 <tr data-id="${s.id}" class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
-                    <td class="px-2 py-6 text-center text-[12px] font-black text-slate-900 dark:text-white w-20 border-r dark:border-white/10 bg-slate-50 dark:bg-black/20">${i + 1}</td>
+                    <td class="px-2 py-6 text-center text-[13px] font-black text-slate-900 dark:text-white w-20 border-r dark:border-white/10 bg-slate-50 dark:bg-black/20">${i + 1}</td>
                     <td class="px-4 py-6 text-left">
                         <span contenteditable="true" class="edit-name text-indigo-green dark:text-white outline-none text-xs sm:text-sm font-bold tracking-tight">${s.name}</span>
                     </td>
@@ -483,12 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const passInput = $('#password').value;
             let savedPass = "1234";
-            try { savedPass = atob(data.password); } catch(err) { data.password = btoa("1234"); }
+            try { savedPass = atob(data.password); } catch(err) {}
             if (passInput === savedPass) { sessionStorage.setItem(LOGGED_IN_KEY, 'true'); checkLogin(); showToast("LOGIN REALIZADO"); }
             else { showToast("SENHA INCORRETA", "error"); }
         });
 
-        bind('#logout-btn', 'click', () => showConfirmationModal('Sair', 'DESEJA SAIR?', () => { sessionStorage.removeItem(LOGGED_IN_KEY); location.reload(); }));
+        bind('#logout-btn', 'click', () => showConfirmationModal('Sair', 'DESEJA ENCERRAR A SESSÃO?', () => { sessionStorage.removeItem(LOGGED_IN_KEY); location.reload(); }));
         bind('#attendanceDate', 'change', renderAll);
         bind('#class-selector', 'change', (e) => { activeClassId = e.target.value; renderAll(); saveData(true); });
         bind('#searchStudent', 'input', renderStudentList);
@@ -500,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(cls.students.some(s => s.name === name)) return showToast("JÁ EXISTE", "error");
                 cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: name });
                 $('#studentName').value = ''; renderStudentList(); saveData(true);
-                showToast("1 ALUNO ADICIONADO");
+                showToast("ALUNO ADICIONADO");
             }
         });
 
@@ -543,7 +562,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showConfirmationModal('Zerar Lista', 'APAGAR TODOS OS ALUNOS?', () => {
                 const cls = getActiveClass();
                 lastActionUndo = { type: 'del_all', clsId: activeClassId, students: [...cls.students] };
-                cls.students = []; renderStudentList(); saveData(true); showUndoToast('Lista zerada');
+                cls.students = [];
+                renderStudentList(); saveData(true); showUndoToast('Lista zerada');
             });
         });
 
@@ -563,8 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
         bind('#confirmPasteButton', 'click', confirmPaste);
         bind('#saveSettingsBtn', 'click', () => {
             const np = $('#newPassword').value;
-            if (np && np.length >= 4) { data.password = btoa(np); $('#newPassword').value = ''; showToast("SENHA ALTERADA"); saveData(true); closeModal(); }
-            else showToast("MÍNIMO 4 DÍGITOS", "error");
+            if (np && np.length >= 4) {
+                data.password = btoa(np); $('#newPassword').value = ''; showToast("SENHA ALTERADA"); saveData(true); closeModal();
+            } else showToast("MÍNIMO 4 DÍGITOS", "error");
         });
         bind('#exportPdfBtn', 'click', exportPdf);
         bind('#undo-btn', 'click', handleUndo);
@@ -572,6 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bind('#next-month-btn', 'click', () => { diaryState.month++; renderDiary(); });
 
         bind('#confirmButton', 'click', () => { if (currentConfirmCallback) { currentConfirmCallback(); currentConfirmCallback = null; } closeModal(); });
+
         $$('.modal-close-btn').forEach(b => b.addEventListener('click', closeModal));
         $$('.modal-backdrop').forEach(m => { m.addEventListener('click', (e) => { if (e.target === m && m.id !== 'login-screen') closeModal(); }); });
         window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
@@ -597,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderClassList = () => {
         $('#classList').innerHTML = data.classes.map(c => `
-            <div class="flex items-center justify-between p-5 bg-slate-50 dark:bg-white/5 rounded-2xl border border-transparent">
+            <div class="flex items-center justify-between p-5 bg-slate-50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-egg-yolk transition-all">
                 <span class="font-black text-xs uppercase text-indigo-green dark:text-white">${c.name}</span>
                 <button onclick="window.removeTurma('${c.id}')" class="text-red-500 p-2"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
             </div>
@@ -605,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.removeTurma = (id) => {
-        if (data.classes.length <= 1) return showToast("MÍNIMO 1 TURMA", "error");
+        if (data.classes.length <= 1) return showToast("TURMA MÍNIMA", "error");
         showConfirmationModal('Remover Turma', 'APAGAR TODOS OS DADOS DESTA TURMA?', () => { 
             data.classes = data.classes.filter(c => c.id !== id); 
             if (activeClassId === id) activeClassId = data.classes[0].id; 
@@ -718,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const opt = { 
             margin: 0, filename: 'Diario_Pro_Completo.pdf', image: { type: 'jpeg', quality: 1 }, 
             html2canvas: { scale: 3, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0, windowWidth: contentWidth }, 
-            jsPDF: { unit: 'pt', format: [contentWidth + 40, contentHeight + 80], orientation: 'portrait' }
+            jsPDF: { unit: 'pt', format: [contentWidth + 80, contentHeight + 100], orientation: 'portrait' }
         };
         html2pdf().set(opt).from(element).save().then(() => {
             if (isDarkMode) document.documentElement.classList.add('dark');
@@ -739,10 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openModal = (s) => { const m = $(s); if (m) { m.classList.add('active'); $('#app-body').classList.add('no-scroll'); } };
     const closeModal = () => { $$('.modal-backdrop').forEach(m => m.classList.remove('active')); if (sessionStorage.getItem(LOGGED_IN_KEY) === 'true') $('#app-body').classList.remove('no-scroll'); };
-    const showToast = (m, type = 'success') => { const t = $('#toast'); if (t) { t.textContent = m; t.className = `toast show fixed bottom-8 left-1/2 bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase text-center border border-egg-yolk/30 min-w-[260px] ${type === 'error' ? 'bg-red-900 border-red-500' : ''}`; setTimeout(() => t.classList.remove('show'), 2500); } };
+    const showToast = (m, type = 'success') => { const t = $('#toast'); if (t) { t.textContent = m; t.className = `toast show fixed bottom-8 left-1/2 bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase text-center border border-egg-yolk/30 min-w-[260px] ${type === 'error' ? 'bg-red-900' : ''}`; setTimeout(() => t.classList.remove('show'), 2500); } };
     const showUndoToast = (m) => { const um = $('#undo-message'); const ut = $('#undo-toast'); if(um && ut) { um.textContent = m; ut.classList.add('show'); setTimeout(() => ut.classList.remove('show'), 6000); } };
     const showConfirmationModal = (title, msg, onConfirm) => { $('#modalTitle').textContent = title; $('#modalMessage').textContent = msg; currentConfirmCallback = onConfirm; openModal('#confirmationModal'); };
-
     const initTheme = () => {
         if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
         const update = () => { const isDark = document.documentElement.classList.contains('dark'); $('#theme-toggle-btn').innerHTML = isDark ? `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>` : `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`; };
