@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Diário de Classe Pro | Definitive Edition</title>
+    <title>Diário de Classe Pro | V34 Final Review</title>
     
     <link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%23FFB800'/%3E%3Cpath d='M30 35h40M30 50h40M30 65h25' stroke='%230D5C63' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -36,148 +36,151 @@
         html, body { height: 100%; margin: 0; padding: 0; overflow-x: hidden; background-color: #F8FAFC; }
         body { scroll-behavior: smooth; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         .no-scroll { overflow: hidden !important; touch-action: none; }
-        .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .glass { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         
         .modal-backdrop { 
-            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            opacity: 0; visibility: hidden; transition: all 0.25s ease-out; 
             z-index: 500; position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-            padding: 1rem; background-color: rgba(13, 92, 99, 0.9); backdrop-filter: blur(6px);
+            padding: 1rem; background-color: rgba(13, 92, 99, 0.8);
         }
         .modal-backdrop.active { opacity: 1; visibility: visible; }
-        /* Garantir que o modal de confirmação fique SEMPRE no topo de outros modais */
         #confirmationModal { z-index: 700 !important; }
 
-        .modal-content { transform: scale(0.95) translateY(10px); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 92vh; width: 100%; overflow-y: auto; }
-        .modal-backdrop.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-content { transform: scale(0.98); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-height: 92vh; width: 100%; overflow-y: auto; border-radius: 2.5rem; }
+        .modal-backdrop.active .modal-content { transform: scale(1); }
         
-        .toast { opacity: 0; transform: translate(-50%, 20px); transition: all 0.3s ease; visibility: hidden; z-index: 1000; }
+        .toast { opacity: 0; transform: translate(-50%, 20px); transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); visibility: hidden; z-index: 1000; }
         .toast.show { opacity: 1; transform: translate(-50%, 0); visibility: visible; }
 
-        .status-btn.active-P { background-color: #16a34a; color: white; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); border-color: transparent; }
-        .status-btn.active-F { background-color: #dc2626; color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); border-color: transparent; }
-        .status-btn.active-J { background-color: #d97706; color: white; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); border-color: transparent; }
+        .status-btn.active-P { background-color: #16a34a; color: white; border-color: transparent; }
+        .status-btn.active-F { background-color: #dc2626; color: white; border-color: transparent; }
+        .status-btn.active-J { background-color: #d97706; color: white; border-color: transparent; }
         
         .custom-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #FFB800; border-radius: 10px; }
         
         .sticky-col { position: sticky; left: 0; z-index: 20; background-color: inherit; }
-        .dark h1, .dark h2, .dark h3 { color: #FFB800 !important; }
         .bg-grad-yolk { background: linear-gradient(135deg, #FFB800 0%, #FF9500 100%); }
         .bg-grad-indigo { background: linear-gradient(135deg, #0D5C63 0%, #083E43 100%); }
 
-        .edit-name { white-space: nowrap; display: inline-block; min-width: 100px; }
+        /* Melhoria final de legibilidade de nomes */
+        .edit-name { 
+            white-space: pre-wrap;
+            display: block; 
+            min-width: 140px; 
+            letter-spacing: 0.02em; 
+            word-spacing: 0.15rem; 
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 640px) {
-            .modal-content { border-radius: 2.5rem !important; padding: 1.5rem !important; }
-            .status-btn { width: 2.5rem !important; height: 2.5rem !important; }
+            .modal-content { border-radius: 1.5rem !important; padding: 1.25rem !important; }
+            .status-btn { width: 2.2rem !important; height: 2.2rem !important; font-size: 8px !important; }
         }
     </style>
 </head>
-<body class="dark:bg-[#021112] text-slate-800 dark:text-slate-100 transition-colors duration-500 no-scroll" id="app-body">
+<body class="dark:bg-[#021112] text-slate-800 dark:text-slate-100 transition-colors duration-300 no-scroll" id="app-body">
 
-    <!-- Tela de Login -->
+    <!-- Login -->
     <div id="login-screen" class="fixed inset-0 bg-white dark:bg-[#021112] flex items-center justify-center p-4 z-[600]">
         <div class="w-full max-w-sm glass bg-white/70 dark:bg-indigo-green/10 shadow-2xl rounded-[3rem] p-8 sm:p-10 border border-slate-200 dark:border-indigo-green/30 text-center">
             <div class="flex flex-col items-center mb-8">
-                <div class="w-20 h-20 bg-grad-yolk rounded-3xl flex items-center justify-center mb-5 shadow-2xl rotate-6 animate-pulse">
-                    <svg class="w-12 h-12 text-indigo-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div class="w-16 h-16 bg-grad-yolk rounded-2xl flex items-center justify-center mb-5 shadow-xl">
+                    <svg class="w-10 h-10 text-indigo-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <h2 class="text-3xl font-black text-indigo-green dark:text-egg-yolk tracking-tighter uppercase">Diário Pro</h2>
-                <p class="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Acesso Autorizado</p>
+                <h2 class="text-2xl font-black text-indigo-green dark:text-egg-yolk uppercase tracking-tight">Diário de Classe</h2>
+                <p class="text-[10px] font-black text-slate-400 mt-2 uppercase tracking-widest">Senha padrão: 1234</p>
             </div>
             <form id="login-form">
                 <div class="mb-6">
-                    <input type="password" id="password" autocomplete="current-password" placeholder="SENHA" class="w-full py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 focus:outline-none focus:border-egg-yolk transition-all text-center font-black tracking-[0.5em] text-indigo-green dark:text-white text-lg">
+                    <input type="password" id="password" autocomplete="current-password" placeholder="SENHA" class="w-full py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 focus:outline-none focus:border-egg-yolk transition-all text-center font-black tracking-[0.5em] text-indigo-green dark:text-white text-lg shadow-inner">
                 </div>
-                <button type="submit" class="w-full bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl transition shadow-xl active:scale-95 uppercase tracking-widest text-sm">Entrar</button>
+                <button type="submit" class="w-full bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl transition shadow-lg active:scale-95 uppercase tracking-widest text-xs">Entrar no Sistema</button>
             </form>
         </div>
     </div>
 
     <!-- Interface Principal -->
-    <main class="container mx-auto px-3 sm:px-4 py-6 md:py-12 max-w-5xl hidden opacity-0 transition-opacity duration-1000" id="main-content">
+    <main class="container mx-auto px-3 sm:px-4 py-6 md:py-10 max-w-5xl hidden opacity-0 transition-opacity duration-500" id="main-content">
         
-        <!-- Header Centralizado -->
-        <header class="glass bg-white/80 dark:bg-indigo-green/10 shadow-xl border border-slate-200 dark:border-indigo-green/20 rounded-[2.5rem] p-5 sm:p-8 mb-6 sm:mb-10 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-slate-100 dark:bg-indigo-green/20">
-                <div id="attendance-progress" class="h-full bg-grad-yolk transition-all duration-700 shadow-[0_0_20px_#FFB800]" style="width: 0%"></div>
+        <header class="glass bg-white/90 dark:bg-indigo-green/20 shadow-xl border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-5 sm:p-8 mb-6 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-slate-100 dark:bg-indigo-green/20">
+                <div id="attendance-progress" class="h-full bg-grad-yolk transition-all duration-500" style="width: 0%"></div>
             </div>
             
-            <div class="flex flex-col items-center gap-5 sm:gap-6 mt-2">
+            <div class="flex flex-col items-center gap-5 mt-2">
                 <div class="w-full">
                     <div class="flex items-center justify-center gap-3 mb-2">
-                         <h1 id="class-title-header" contenteditable="true" class="text-2xl sm:text-4xl md:text-5xl font-black text-indigo-green dark:text-egg-yolk truncate focus:ring-0 uppercase tracking-tighter"></h1>
-                         <button id="theme-toggle-btn" class="p-3 rounded-2xl bg-slate-100 dark:bg-white/10 hover:bg-egg-yolk transition-all shadow-inner"></button>
+                         <h1 id="class-title-header" contenteditable="true" class="text-2xl sm:text-4xl font-black text-indigo-green dark:text-egg-yolk truncate focus:ring-0 uppercase tracking-tight"></h1>
+                         <button id="theme-toggle-btn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-egg-yolk transition-all"></button>
                     </div>
-                    <select id="class-selector" class="text-[9px] sm:text-[10px] font-black bg-indigo-green dark:bg-egg-yolk text-white dark:text-indigo-green rounded-full px-5 py-2 focus:outline-none uppercase tracking-widest shadow-xl cursor-pointer"></select>
+                    <select id="class-selector" class="text-[10px] font-black bg-indigo-green dark:bg-egg-yolk text-white dark:text-indigo-green rounded-full px-6 py-2.5 focus:outline-none uppercase tracking-widest shadow-lg cursor-pointer"></select>
                 </div>
                 
                 <nav class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-                    <button id="diary-btn" title="Matriz" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
-                    <button id="charts-btn" title="Performance" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></button>
-                    <button id="reports-btn" title="Relatórios" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all border border-slate-100 dark:border-white/10"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
+                    <button id="diary-btn" title="Diário" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all shadow-sm border border-slate-100 dark:border-white/10"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+                    <button id="charts-btn" title="Gráficos" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all shadow-sm border border-slate-100 dark:border-white/10"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></button>
+                    <button id="reports-btn" title="Relatórios" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-egg-yolk transition-all shadow-sm border border-slate-100 dark:border-white/10"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
                     <div class="w-px h-8 bg-slate-200 dark:bg-indigo-green/30 mx-1"></div>
-                    <button id="settings-btn" title="Definições" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-grad-yolk transition-all border border-slate-100 dark:border-white/10"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-                    <button id="logout-btn" title="Sair" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-red-500 hover:bg-red-50 transition-all"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                    <button id="settings-btn" title="Definições" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-indigo-green dark:text-white hover:bg-grad-yolk transition-all shadow-sm border border-slate-100 dark:border-white/10"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+                    <button id="logout-btn" title="Sair" class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 text-red-500 hover:bg-red-50 transition-all"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
                 </nav>
             </div>
             
-            <div class="mt-8 pt-6 border-t border-slate-100 dark:border-indigo-green/20 flex flex-col items-center gap-3">
-                <div class="w-full max-w-xs">
-                    <label for="attendanceDate" class="block text-[10px] font-black text-slate-400 dark:text-white/20 uppercase tracking-widest mb-1.5 text-center">Data do Registro</label>
-                    <input type="date" id="attendanceDate" class="w-full py-3.5 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 font-black focus:border-egg-yolk transition-all outline-none text-center text-indigo-green dark:text-white shadow-inner">
-                </div>
-                <div id="currentTime" class="text-[10px] font-black bg-grad-indigo text-egg-yolk py-2 px-8 rounded-full shadow-lg border border-egg-yolk/20 uppercase tracking-widest"></div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-indigo-green/20">
+                <input type="date" id="attendanceDate" class="w-full max-w-xs py-3.5 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 font-black focus:border-egg-yolk outline-none text-center text-indigo-green dark:text-white shadow-inner text-[11px] uppercase tracking-widest">
             </div>
         </header>
 
-        <div class="grid lg:grid-cols-2 gap-6 sm:gap-8 mb-8 text-center">
+        <div class="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-8">
             <!-- Cadastro -->
-            <section class="bg-white dark:bg-indigo-green/5 shadow-lg border border-slate-200 dark:border-indigo-green/20 rounded-[2.5rem] p-6 sm:p-10 flex flex-col items-center">
-                <h2 class="text-lg sm:text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3 text-indigo-green dark:text-egg-yolk">Matrícula</h2>
-                <div class="w-full space-y-5">
-                    <div class="flex gap-2 w-full">
-                        <input type="text" id="studentName" placeholder="NOME DO ALUNO" class="flex-grow py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk transition-all font-bold text-center uppercase text-xs sm:text-sm shadow-inner">
-                        <button id="addStudentBtn" class="bg-grad-yolk text-indigo-green font-black px-6 rounded-2xl active:scale-95 transition-all shadow-lg"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+            <section class="bg-white dark:bg-indigo-green/5 shadow border border-slate-200 dark:border-white/5 rounded-[2rem] p-6 sm:p-8 text-center">
+                <h2 class="text-xs font-black mb-6 uppercase tracking-[0.2em] text-indigo-green dark:text-egg-yolk">Adicionar Alunos</h2>
+                <div class="space-y-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="studentName" placeholder="NOME DO ALUNO" class="flex-grow py-3.5 px-5 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk font-bold text-center uppercase text-xs">
+                        <button id="addStudentBtn" class="bg-grad-yolk text-indigo-green font-black px-6 rounded-2xl active:scale-95 shadow-md"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
                     </div>
-                    <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
-                        <button id="manage-classes-btn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest shadow-xl hover:brightness-110">Turmas</button>
-                        <button id="pasteListBtn" class="bg-indigo-green text-egg-yolk font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest shadow-xl hover:brightness-110">Importar</button>
-                        <button id="deleteAllStudentsBtn" class="bg-red-500/10 text-red-500 font-black py-3 px-6 rounded-2xl transition text-[9px] sm:text-[10px] uppercase tracking-widest border border-red-500/20 hover:bg-red-600 hover:text-white">Zerar</button>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button id="manage-classes-btn" class="bg-indigo-green text-egg-yolk font-black py-3 px-5 rounded-xl transition text-[9px] uppercase tracking-widest shadow">Turmas</button>
+                        <button id="pasteListBtn" class="bg-indigo-green text-egg-yolk font-black py-3 px-5 rounded-xl transition text-[9px] uppercase tracking-widest shadow">Importar</button>
+                        <button id="deleteAllStudentsBtn" class="bg-red-500/10 text-red-500 font-black py-3 px-5 rounded-xl transition text-[9px] uppercase tracking-widest border border-red-500/20">Zerar</button>
                     </div>
                 </div>
             </section>
             
-            <!-- Ações -->
-            <section class="bg-white dark:bg-[#0D5C63]/10 shadow-lg border border-gray-200 dark:border-indigo-green/20 rounded-[2.5rem] p-6 sm:p-8 flex flex-col items-center text-center">
-                <h2 class="text-lg sm:text-xl font-black mb-6 uppercase tracking-widest text-indigo-green dark:text-egg-yolk">Comandos Rápidos</h2>
-                <div class="grid grid-cols-2 gap-2 sm:gap-3 w-full">
-                    <button id="markAllPresentBtn" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest flex-grow border border-egg-yolk-dark/20">Presentes (P)</button>
-                    <button id="markAbsenteesBtn" class="bg-red-600 text-white font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest flex-grow">Faltas (F)</button>
-                    <button id="clearAllBtn" class="bg-grad-indigo text-egg-yolk font-black py-4 rounded-2xl transition-all shadow-lg text-[10px] uppercase tracking-widest flex-grow border border-white/5">Limpar</button>
-                    <button id="exportPdfBtn" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl active:scale-95 transition shadow-lg text-[10px] uppercase tracking-widest flex-grow border border-egg-yolk-dark/20">Baixar PDF</button>
+            <!-- Ações Rápidas -->
+            <section class="bg-white dark:bg-[#0D5C63]/10 shadow border border-gray-200 dark:border-white/5 rounded-[2rem] p-6 sm:p-8 text-center">
+                <h2 class="text-xs font-black mb-6 uppercase tracking-[0.2em] text-indigo-green dark:text-egg-yolk">Chamada Rápida</h2>
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button id="markAllPresentBtn" class="bg-grad-yolk text-indigo-green font-black py-3.5 rounded-2xl active:scale-95 shadow text-[9px] uppercase tracking-widest">Todos (P)</button>
+                    <button id="markAbsenteesBtn" class="bg-red-600 text-white font-black py-3.5 rounded-2xl active:scale-95 shadow text-[9px] uppercase tracking-widest">Faltas (F)</button>
+                    <button id="clearAllBtn" class="bg-grad-indigo text-egg-yolk font-black py-3.5 rounded-2xl shadow text-[9px] uppercase tracking-widest">Limpar</button>
+                    <button id="exportPdfBtn" class="bg-grad-yolk text-indigo-green font-black py-3.5 rounded-2xl active:scale-95 shadow text-[9px] uppercase tracking-widest">Gerar PDF</button>
                 </div>
             </section>
         </div>
 
-        <section id="capture-area" class="bg-white dark:bg-indigo-green/10 shadow-2xl border border-slate-200 dark:border-indigo-green/20 rounded-[3rem] overflow-hidden mb-12 backdrop-blur-md">
-            <div class="p-6 sm:p-10 border-b border-slate-100 dark:border-indigo-green/20 text-center">
-                <div class="flex flex-col items-center gap-5 sm:gap-6">
+        <!-- Lista -->
+        <section id="capture-area" class="bg-white dark:bg-indigo-green/10 shadow-2xl border border-slate-200 dark:border-white/5 rounded-[2.5rem] overflow-hidden mb-12">
+            <div class="p-6 sm:p-10 border-b border-slate-100 dark:border-white/5 text-center">
+                <div class="flex flex-col items-center gap-6">
                     <div>
-                        <h2 class="text-xl sm:text-3xl font-black uppercase tracking-tighter text-indigo-green dark:text-egg-yolk">Lista de Chamada</h2>
+                        <h2 class="text-xl sm:text-3xl font-black uppercase tracking-tight text-indigo-green dark:text-egg-yolk">Lista de Chamada</h2>
                         <p id="list-date-display" class="text-[10px] text-slate-400 dark:text-white/30 font-black mt-2 uppercase tracking-widest"></p>
                     </div>
                     
-                    <div class="flex items-center gap-1.5 no-export py-1 overflow-x-auto max-w-full custom-scrollbar">
-                        <button onclick="window.filterByStatus(event, 'all')" class="filter-btn active bg-indigo-green text-egg-yolk px-4 py-2 rounded-full text-[9px] font-black uppercase shadow-lg whitespace-nowrap">Exibir Todos</button>
-                        <button onclick="window.filterByStatus(event, 'P')" class="filter-btn bg-slate-100 dark:bg-white/5 text-slate-400 px-4 py-2 rounded-full text-[9px] font-black uppercase transition-all hover:bg-green-500 hover:text-white">Presentes</button>
-                        <button onclick="window.filterByStatus(event, 'F')" class="filter-btn bg-slate-100 dark:bg-white/5 text-slate-400 px-4 py-2 rounded-full text-[9px] font-black uppercase transition-all hover:bg-red-500 hover:text-white">Ausentes</button>
+                    <div class="flex items-center gap-2 no-export py-1 overflow-x-auto max-w-full custom-scrollbar">
+                        <button onclick="window.filterByStatus(event, 'all')" class="filter-btn active bg-indigo-green text-egg-yolk px-5 py-2.5 rounded-full text-[9px] font-black uppercase shadow-lg whitespace-nowrap">Ver Todos</button>
+                        <button onclick="window.filterByStatus(event, 'P')" class="filter-btn bg-slate-100 dark:bg-white/5 text-slate-400 px-5 py-2.5 rounded-full text-[9px] font-black uppercase">Presentes</button>
+                        <button onclick="window.filterByStatus(event, 'F')" class="filter-btn bg-slate-100 dark:bg-white/5 text-slate-400 px-5 py-2.5 rounded-full text-[9px] font-black uppercase">Ausentes</button>
                     </div>
 
                     <div class="relative w-full max-w-md no-export">
-                        <input type="text" id="searchStudent" placeholder="PESQUISAR..." class="w-full py-4 pl-12 pr-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-full bg-slate-50 dark:bg-black/20 text-xs sm:text-sm outline-none focus:border-egg-yolk transition-all text-center font-bold uppercase shadow-inner">
-                        <svg class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-green/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="searchStudent" placeholder="BUSCAR POR NOME..." class="w-full py-4 pl-12 pr-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-full bg-slate-50 dark:bg-black/20 text-xs outline-none focus:border-egg-yolk text-center font-bold uppercase shadow-inner">
+                        <svg class="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-green/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
                 </div>
                 <div id="attendance-summary" class="mt-8 flex flex-wrap justify-center gap-3"></div>
@@ -185,150 +188,87 @@
             
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-center border-collapse">
-                    <thead class="bg-slate-50/50 dark:bg-indigo-green/10 border-b dark:border-indigo-green/30">
+                    <thead class="bg-slate-50/50 dark:bg-indigo-green/10 border-b dark:border-white/5">
                         <tr>
-                            <th class="px-4 py-5 text-[9px] font-black uppercase tracking-widest text-slate-300 w-16 text-center">ID</th>
-                            <th id="sort-by-name" class="sortable-header px-4 py-5 text-[10px] font-black uppercase tracking-widest text-indigo-green dark:text-egg-yolk cursor-pointer text-center">Aluno <span></span></th>
-                            <th id="sort-by-status" class="sortable-header px-4 py-5 text-[10px] font-black uppercase tracking-widest text-indigo-green dark:text-egg-yolk cursor-pointer text-center">Status <span></span></th>
-                            <th class="px-4 py-5 text-[10px] font-black uppercase tracking-widest text-indigo-green dark:text-egg-yolk no-export text-center">Registro</th>
+                            <th class="px-3 py-5 text-[9px] font-black uppercase text-slate-300 w-14">№</th>
+                            <th id="sort-by-name" class="sortable-header px-4 py-5 text-[10px] font-black uppercase text-indigo-green dark:text-egg-yolk cursor-pointer text-center">Aluno (A-Z) <span></span></th>
+                            <th id="sort-by-status" class="sortable-header px-4 py-5 text-[10px] font-black uppercase text-indigo-green dark:text-egg-yolk cursor-pointer text-center">Status <span></span></th>
+                            <th class="px-4 py-5 text-[10px] font-black uppercase text-indigo-green dark:text-egg-yolk no-export text-center">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="studentList" class="divide-y divide-slate-100 dark:divide-indigo-green/10"></tbody>
+                    <tbody id="studentList" class="divide-y divide-slate-100 dark:divide-white/5"></tbody>
                 </table>
-                <div id="empty-state" class="hidden flex flex-col items-center justify-center p-16 text-center">
-                    <p class="font-black uppercase tracking-widest text-[9px] text-slate-400">Nenhum registro acadêmico</p>
+                <div id="empty-state" class="hidden p-20 text-center">
+                    <p class="font-black uppercase tracking-[0.3em] text-[10px] text-slate-300">Vazio</p>
                 </div>
-                <div id="empty-search-state" class="hidden p-16 text-center text-slate-300 font-black text-xs uppercase tracking-widest italic">A busca não retornou resultados</div>
             </div>
         </section>
     </main>
 
     <!-- Modals -->
     <div id="confirmationModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#021112] rounded-[3rem] shadow-3xl p-8 sm:p-12 w-full max-w-sm border-4 border-egg-yolk text-center relative overflow-hidden">
-            <h3 class="text-xl sm:text-2xl font-black mb-4 uppercase tracking-tighter transition-colors" id="modalTitle"></h3>
-            <p class="text-slate-500 dark:text-white/50 mb-10 leading-relaxed font-bold text-sm" id="modalMessage"></p>
+        <div class="modal-content bg-white dark:bg-[#021112] p-8 w-full max-w-sm border-4 border-egg-yolk text-center shadow-3xl">
+            <h3 class="text-xl font-black mb-4 uppercase" id="modalTitle"></h3>
+            <p class="text-slate-500 dark:text-white/40 mb-10 font-bold text-xs leading-relaxed" id="modalMessage"></p>
             <div class="flex flex-col gap-3">
-                <button id="confirmButton" class="bg-grad-yolk text-indigo-green font-black py-4.5 rounded-2xl shadow-xl uppercase tracking-widest text-[11px] active:scale-95 transition-all">Confirmar (ENTER)</button>
-                <button class="modal-close-btn bg-slate-100 dark:bg-white/5 text-slate-400 font-black py-3.5 rounded-2xl uppercase tracking-widest text-[9px] hover:text-indigo-green transition-all">Cancelar</button>
+                <button id="confirmButton" class="bg-grad-yolk text-indigo-green font-black py-4.5 rounded-2xl shadow-xl text-[11px] uppercase active:scale-95 transition-all">Confirmar</button>
+                <button class="modal-close-btn bg-slate-100 dark:bg-white/5 text-slate-400 font-black py-4 rounded-2xl uppercase text-[10px]">Cancelar</button>
             </div>
         </div>
     </div>
 
     <!-- Modal Importar -->
     <div id="pasteModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#041a1c] rounded-[3rem] shadow-2xl p-6 sm:p-10 w-full max-w-2xl border-2 border-egg-yolk/30">
-            <h3 class="text-2xl sm:text-3xl font-black mb-6 uppercase tracking-tighter text-center">Importação de Alunos</h3>
-            
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="modal-content bg-white dark:bg-[#041a1c] p-6 sm:p-10 w-full max-w-2xl border-2 border-white/5 shadow-3xl">
+            <h3 class="text-3xl font-black mb-6 uppercase text-center tracking-tight">Importação de Dados</h3>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
                 <div class="space-y-4">
-                    <textarea id="pasteTextarea" class="w-full h-48 p-4 border-2 border-slate-100 dark:border-indigo-green/20 rounded-[2rem] bg-slate-50 dark:bg-black/40 outline-none focus:border-egg-yolk transition font-bold text-xs uppercase shadow-inner" placeholder="COLE OS NOMES AQUI (UM POR LINHA)..."></textarea>
-                    
-                    <div class="bg-indigo-green/5 dark:bg-white/5 border-2 border-dashed border-indigo-green/20 dark:border-white/10 p-6 rounded-[2rem] text-center">
-                        <label class="cursor-pointer group block">
-                            <span class="text-[10px] font-black text-indigo-green dark:text-egg-yolk uppercase tracking-widest">Ou envie um arquivo .CSV</span>
+                    <textarea id="pasteTextarea" class="w-full h-48 p-5 border-2 border-slate-100 dark:border-white/10 rounded-[2rem] bg-slate-50 dark:bg-black/40 outline-none focus:border-egg-yolk font-bold text-xs uppercase" placeholder="COLE OS NOMES AQUI..."></textarea>
+                    <div class="bg-indigo-green/5 dark:bg-white/5 border-2 border-dashed border-indigo-green/20 p-6 rounded-[2rem] text-center">
+                        <label class="cursor-pointer block">
+                            <span class="text-[10px] font-black text-indigo-green dark:text-egg-yolk uppercase tracking-widest">Enviar arquivo .CSV</span>
                             <input type="file" id="importCsvInput" class="hidden" accept=".csv">
-                            <div class="mt-2 text-[8px] text-slate-400 uppercase">Clique para selecionar</div>
                         </label>
                     </div>
                 </div>
-
-                <div class="bg-slate-50 dark:bg-black/30 p-6 rounded-[2.5rem] border border-slate-100 dark:border-white/5">
-                    <h4 class="text-[11px] font-black text-indigo-green dark:text-egg-yolk uppercase mb-4 tracking-widest border-b pb-2">Como formatar seu CSV:</h4>
-                    <ul class="text-[10px] space-y-3 font-bold text-slate-500 dark:text-slate-300">
-                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> 1ª Coluna: Deve conter o NOME DO ALUNO.</li>
-                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Separador: Use ponto e vírgula (;) ou vírgula (,).</li>
-                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Cabeçalho: O sistema ignora linhas com "Nome" ou "Número".</li>
+                <div class="bg-slate-50 dark:bg-black/30 p-8 rounded-[2.5rem] border border-slate-100 dark:border-white/5">
+                    <h4 class="text-[11px] font-black text-indigo-green dark:text-egg-yolk uppercase mb-4 tracking-widest">Recomendações:</h4>
+                    <ul class="text-[10px] space-y-4 font-bold text-slate-500 dark:text-slate-400">
+                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Primeira coluna: Nome.</li>
+                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Aceita ponto e vírgula (;).</li>
+                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Ordena de A a Z sozinho.</li>
+                        <li class="flex gap-2"><span class="text-egg-yolk">•</span> Limpa nomes mal escritos.</li>
                     </ul>
-                    <div class="mt-6">
-                        <button id="downloadTemplateBtn" class="w-full py-3 bg-white dark:bg-white/10 border border-egg-yolk/30 rounded-xl text-[9px] font-black text-indigo-green dark:text-egg-yolk hover:bg-egg-yolk hover:text-white transition-all uppercase tracking-widest shadow-sm flex items-center justify-center gap-2">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Baixar Modelo CSV
-                        </button>
+                    <div class="mt-8">
+                        <button id="downloadTemplateBtn" class="w-full py-3 bg-white dark:bg-white/10 border border-egg-yolk/30 rounded-xl text-[9px] font-black text-indigo-green dark:text-egg-yolk hover:bg-egg-yolk hover:text-white uppercase transition-all shadow-sm">Baixar Modelo</button>
                     </div>
                 </div>
             </div>
-
             <div class="grid grid-cols-2 gap-4">
-                <button class="modal-close-btn bg-slate-50 dark:bg-white/5 text-gray-400 font-black py-4 rounded-2xl uppercase tracking-widest text-[10px]">Cancelar</button>
-                <button id="confirmPasteButton" class="bg-grad-yolk text-indigo-green font-black py-4 rounded-2xl shadow-xl uppercase tracking-widest text-[10px] active:scale-95 transition-all">Confirmar</button>
+                <button class="modal-close-btn bg-slate-50 dark:bg-white/5 text-gray-400 font-black py-4.5 rounded-2xl uppercase text-[10px]">Fechar</button>
+                <button id="confirmPasteButton" class="bg-grad-yolk text-indigo-green font-black py-4.5 rounded-2xl shadow-xl uppercase text-[10px] active:scale-95 transition-all">Importar Lista</button>
             </div>
         </div>
     </div>
 
     <!-- Modal Turmas -->
     <div id="manageClassesModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#041a1c] rounded-[2.5rem] shadow-2xl p-8 w-full max-w-2xl text-center flex flex-col max-h-[90vh]">
-            <h3 class="text-xl sm:text-2xl font-black mb-8 uppercase tracking-widest transition-colors text-center w-full">SUAS TURMAS</h3>
-            <div class="flex flex-col sm:flex-row gap-3 mb-8">
-                <input type="text" id="newClassName" placeholder="NOME DA TURMA" class="flex-grow py-4 px-6 border-2 border-slate-100 dark:border-indigo-green/20 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk transition text-center font-bold uppercase shadow-inner text-xs sm:text-sm">
-                <button id="addClassBtn" class="bg-indigo-green text-egg-yolk font-black px-10 py-4 rounded-2xl shadow-xl uppercase tracking-widest text-[10px]">Criar</button>
+        <div class="modal-content bg-white dark:bg-[#041a1c] p-10 w-full max-w-lg text-center flex flex-col max-h-[90vh] shadow-3xl">
+            <h3 class="text-2xl font-black mb-8 uppercase tracking-widest">Gestão de Turmas</h3>
+            <div class="flex gap-2 mb-8">
+                <input type="text" id="newClassName" placeholder="NOME DA NOVA TURMA" class="flex-grow py-4 px-6 border-2 border-slate-100 dark:border-white/10 rounded-2xl bg-slate-50 dark:bg-black/20 outline-none focus:border-egg-yolk font-bold uppercase text-xs">
+                <button id="addClassBtn" class="bg-indigo-green text-egg-yolk font-black px-8 py-4 rounded-2xl shadow-xl uppercase text-[10px]">Criar</button>
             </div>
             <div id="classList" class="flex-grow overflow-y-auto space-y-3 pr-2 custom-scrollbar"></div>
-            <div class="mt-6 text-center"><button class="modal-close-btn bg-slate-100 dark:bg-white/5 px-10 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-slate-400">Finalizar</button></div>
+            <div class="mt-10"><button class="modal-close-btn bg-slate-100 dark:bg-white/5 px-10 py-4.5 rounded-2xl font-black text-[10px] uppercase text-slate-400 tracking-widest">Concluído</button></div>
         </div>
     </div>
 
-    <!-- Modal Estatísticas -->
-    <div id="chartsModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#021112] rounded-[3.5rem] shadow-3xl p-6 sm:p-12 w-full max-w-md text-center border-4 border-egg-yolk">
-            <h3 class="text-2xl sm:text-3xl font-black mb-8 uppercase tracking-tighter transition-colors">Performance</h3>
-            <div class="relative w-full h-64 sm:h-80 flex items-center justify-center"><canvas id="attendance-chart"></canvas></div>
-            <div class="mt-8 flex justify-center"><button class="modal-close-btn bg-indigo-green text-white px-16 py-4.5 rounded-[2.5rem] font-black uppercase tracking-widest text-[10px]">Fechar</button></div>
-        </div>
-    </div>
-
-    <!-- Modal Configurações -->
-    <div id="settingsModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#041a1c] rounded-[3.5rem] shadow-2xl p-8 sm:p-12 w-full max-w-lg text-center border-2 border-indigo-green/10">
-            <h3 class="text-xl sm:text-2xl font-black mb-10 uppercase tracking-widest">DEFINIÇÕES</h3>
-            <div class="space-y-10">
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 mb-4 uppercase tracking-widest text-center">Nova Senha de Acesso</label>
-                    <input type="password" id="newPassword" placeholder="DIGITE A SENHA" class="w-full py-5 border-b-2 border-slate-100 dark:border-indigo-green/20 bg-transparent outline-none focus:border-egg-yolk transition-all text-center font-black tracking-[0.5em] text-lg sm:text-xl">
-                </div>
-                <div class="pt-8 border-t dark:border-indigo-green/10">
-                    <label class="block text-[10px] font-black text-slate-400 mb-6 uppercase tracking-widest text-center">Manutenção de Banco</label>
-                    <div class="flex flex-col gap-4">
-                        <button id="exportDataBtn" class="w-full bg-slate-50 dark:bg-white/5 text-indigo-green dark:text-egg-yolk font-black py-4.5 rounded-3xl transition-all text-[10px] uppercase tracking-widest hover:brightness-110 shadow-sm border border-transparent hover:border-egg-yolk/30">Baixar Backup</button>
-                        <label class="w-full bg-egg-yolk text-indigo-green font-black py-4.5 rounded-3xl hover:scale-105 transition-all text-center cursor-pointer shadow-2xl text-[10px] uppercase tracking-widest">Restaurar do Arquivo<input type="file" id="importDataInput" class="hidden" accept=".json"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12"><button id="saveSettingsBtn" class="bg-grad-yolk text-indigo-green font-black py-5 w-full rounded-[2rem] shadow-xl uppercase tracking-widest text-[10px]">Guardar</button></div>
-        </div>
-    </div>
-
-    <!-- Modal Relatórios -->
-    <div id="reportsModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#021112] rounded-[3.5rem] shadow-3xl p-6 sm:p-10 w-full max-w-4xl max-h-[90vh] flex flex-col border border-white/10 text-center">
-            <h3 class="text-2xl font-black mb-8 tracking-tighter uppercase transition-colors">Resumo de Assiduidade</h3>
-            <div id="reports-content" class="flex-grow overflow-y-auto pr-3 custom-scrollbar rounded-3xl border-2 border-slate-50 dark:border-indigo-green/20 bg-slate-50/30 dark:bg-black/20 shadow-inner"></div>
-            <div class="mt-8 flex justify-center"><button class="modal-close-btn bg-indigo-green text-white px-16 py-4.5 rounded-[2.5rem] font-black uppercase tracking-widest text-[10px]">Sair</button></div>
-        </div>
-    </div>
-
-    <!-- Modal Diário -->
-    <div id="diaryModal" class="modal-backdrop">
-        <div class="modal-content bg-white dark:bg-[#021112] rounded-[3.5rem] shadow-3xl p-6 sm:p-8 w-full max-w-[98vw] h-full max-h-[95vh] flex flex-col border-2 border-egg-yolk/20 text-center">
-            <div class="flex flex-col items-center gap-6 mb-8">
-                <h3 class="text-2xl font-black uppercase tracking-tighter">Matriz Acadêmica</h3>
-                <div class="flex items-center gap-6 bg-indigo-green dark:bg-black/60 p-3 rounded-full shadow-2xl border border-white/5">
-                    <button id="prev-month-btn" class="p-3 rounded-full bg-white/5 text-egg-yolk hover:bg-white hover:text-indigo-green transition-all shadow-sm font-black">&lt;</button>
-                    <span id="diary-month-year" class="font-black min-w-[180px] text-center text-[10px] uppercase tracking-widest text-white"></span>
-                    <button id="next-month-btn" class="p-3 rounded-full bg-white/5 text-egg-yolk hover:bg-white hover:text-indigo-green transition-all shadow-sm font-black">&gt;</button>
-                </div>
-            </div>
-            <div id="diary-content" class="flex-grow overflow-auto border-2 border-slate-100 dark:border-indigo-green/20 rounded-[3rem] custom-scrollbar bg-slate-50/50 dark:bg-black/30 shadow-inner"></div>
-            <div class="mt-8"><button class="modal-close-btn bg-indigo-green text-white px-16 py-4.5 rounded-[2.5rem] font-black uppercase tracking-widest text-[10px] hover:scale-110 transition-transform">Voltar</button></div>
-        </div>
-    </div>
-
-    <!-- UI Feedback Flutuante -->
-    <div id="toast" class="toast fixed bottom-8 left-1/2 glass bg-indigo-green/90 text-egg-yolk py-4 px-10 rounded-full shadow-3xl font-black text-[10px] uppercase tracking-widest text-center border-2 border-egg-yolk/40 min-w-[260px]"></div>
-    <div id="undo-toast" class="toast fixed bottom-24 left-1/2 glass bg-indigo-green/95 text-white py-5 px-10 rounded-[2.5rem] shadow-3xl flex items-center justify-between gap-10 font-black text-[10px] uppercase tracking-widest border border-white/10 min-w-[320px]">
-        <span id="undo-message" class="text-white/50"></span>
-        <button id="undo-btn" class="text-egg-yolk hover:scale-110 transition-all underline underline-offset-8 decoration-2 text-[10px]">DESFAZER</button>
+    <!-- UI Feedback -->
+    <div id="toast" class="toast fixed bottom-8 left-1/2 bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase tracking-widest text-center border-2 border-egg-yolk/30 min-w-[260px]"></div>
+    <div id="undo-toast" class="toast fixed bottom-24 left-1/2 bg-indigo-green text-white py-5 px-10 rounded-[2rem] shadow-2xl flex items-center justify-between gap-10 font-black text-[10px] uppercase tracking-widest border border-white/10 min-w-[320px]">
+        <span id="undo-message" class="text-white/40"></span>
+        <button id="undo-btn" class="text-egg-yolk hover:scale-105 transition-all underline underline-offset-8">Desfazer</button>
     </div>
 
 <script>
@@ -336,8 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
 
-    const APP_STORAGE_KEY = 'diarioDeClassePro_final_v8_stable';
-    const LOGGED_IN_KEY = 'isLoggedIn_ultra_v5';
+    const APP_STORAGE_KEY = 'diario_v34_stable_gold';
+    const LOGGED_IN_KEY = 'auth_v34_ok';
     const DEFAULT_PASSWORD = '1234';
 
     const STATUSES = {
@@ -350,28 +290,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeClassId = null;
     let sortState = { key: 'name', asc: true };
     let currentFilter = 'all';
-    let charts = {};
-    let diaryState = { year: new Date().getFullYear(), month: new Date().getMonth() };
-    let lastActionUndo = null;
     let currentConfirmCallback = null;
     let saveTimeout = null;
+    let lastActionUndo = null;
+
+    const cleanString = (s) => {
+        if (!s) return "";
+        return s.replace(/[\uFEFF\u200B-\u200D\u00A0]/g, "").trim().replace(/\s+/g, ' ').toUpperCase();
+    };
 
     const init = () => {
         loadData();
         checkLogin();
         setupEvents();
         initTheme();
-        setupKeyboardSupport();
     };
 
     const loadData = () => {
-        try {
-            const stored = localStorage.getItem(APP_STORAGE_KEY);
-            data = stored ? JSON.parse(stored) : { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
-            if (!data.classes) data.classes = [];
-        } catch (e) {
-            data = { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
-        }
+        const stored = localStorage.getItem(APP_STORAGE_KEY);
+        data = stored ? JSON.parse(stored) : { password: btoa(DEFAULT_PASSWORD), classes: [], activeClassId: null };
+        if (!data.classes) data.classes = [];
     };
 
     const saveData = (immediate = false) => {
@@ -379,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const action = () => {
             data.activeClassId = activeClassId;
             localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(data));
-            showToast("DADOS SINCRONIZADOS");
             updateProgress();
             updateSummary();
         };
@@ -391,29 +328,20 @@ document.addEventListener('DOMContentLoaded', () => {
             $('#login-screen').classList.add('hidden');
             $('#main-content').classList.remove('hidden');
             $('#app-body').classList.remove('no-scroll');
-            setTimeout(() => $('#main-content').style.opacity = '1', 50);
+            $('#main-content').style.opacity = '1';
             initApp();
-        } else {
-            $('#app-body').classList.add('no-scroll');
         }
     };
 
     const initApp = () => {
         if (data.classes.length === 0) {
-            const nc = { id: `c_${Date.now()}`, name: "TURMA PRINCIPAL", students: [], history: {} };
+            const nc = { id: `c_${Date.now()}`, name: "TURMA 01", students: [], history: {} };
             data.classes.push(nc); activeClassId = nc.id; saveData(true);
         }
         activeClassId = data.activeClassId || data.classes[0]?.id;
         $('#attendanceDate').valueAsDate = new Date();
         updateClassSelector();
         renderAll();
-        updateClock();
-        setInterval(updateClock, 1000);
-    };
-
-    const updateClock = () => {
-        const d = new Date();
-        $('#currentTime').textContent = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short' });
     };
 
     const getActiveClass = () => data.classes.find(c => c.id === activeClassId);
@@ -423,27 +351,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!cls) return;
         $('#class-title-header').textContent = cls.name;
         renderStudentList();
-        updateDateDisplay();
-    };
-
-    const updateDateDisplay = () => {
         const d = new Date($('#attendanceDate').value + 'T00:00:00');
         $('#list-date-display').textContent = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    };
-
-    const calculateAssiduidade = (studentId) => {
-        const cls = getActiveClass();
-        let p = 0, total = 0;
-        Object.values(cls.history).forEach(day => {
-            if (day[studentId]) { total++; if (day[studentId] === 'P') p++; }
-        });
-        return total > 0 ? ((p / total) * 100).toFixed(0) : "100";
     };
 
     const renderStudentList = () => {
         const cls = getActiveClass();
         if (!cls) return;
-        const search = $('#searchStudent').value.toLowerCase();
+        const searchInput = $('#searchStudent');
+        const search = searchInput ? searchInput.value.toLowerCase() : "";
         const date = $('#attendanceDate').value;
         const records = cls.history[date] || {};
 
@@ -451,61 +367,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentFilter !== 'all') filtered = filtered.filter(s => records[s.id] === currentFilter);
 
         filtered.sort((a, b) => {
-            if (sortState.key === 'name') return sortState.asc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            if (sortState.key === 'name') return sortState.asc ? a.name.localeCompare(b.name, 'pt-BR') : b.name.localeCompare(a.name, 'pt-BR');
             const rA = records[a.id] || 'Z', rB = records[b.id] || 'Z';
             return sortState.asc ? rA.localeCompare(rB) : rB.localeCompare(rA);
         });
 
         $('#empty-state').classList.toggle('hidden', cls.students.length > 0);
-        $('#empty-search-state').classList.toggle('hidden', !search || filtered.length > 0);
 
-        $('#studentList').innerHTML = filtered.map((s, idx) => {
+        let html = '';
+        filtered.forEach((s, i) => {
             const status = records[s.id] || '';
-            const perc = calculateAssiduidade(s.id);
-            return `
-                <tr data-id="${s.id}" class="group hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors">
-                    <td class="px-2 py-5 text-center text-[9px] font-black text-slate-300 w-12 sm:w-20">${idx + 1}</td>
-                    <td class="px-2 sm:px-8 py-5 sm:py-7 font-extrabold text-left transition-transform">
-                        <div class="flex items-center gap-2 sm:gap-3 flex-nowrap">
-                            <span contenteditable="true" class="edit-name uppercase tracking-tighter text-indigo-green dark:text-white outline-none text-[11px] sm:text-sm whitespace-nowrap">${s.name}</span>
-                            <span class="text-[7px] sm:text-[8px] px-2 py-0.5 rounded-full bg-indigo-green/5 dark:bg-white/5 text-slate-400 font-black shrink-0 whitespace-nowrap">${perc}% OK</span>
-                        </div>
+            html += `
+                <tr data-id="${s.id}" class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
+                    <td class="px-2 py-5 text-center text-[8px] font-black text-slate-300 w-12">${i + 1}</td>
+                    <td class="px-4 py-5 text-left">
+                        <span contenteditable="true" class="edit-name text-indigo-green dark:text-white outline-none text-[11px] sm:text-[13px] font-extrabold">${s.name}</span>
                     </td>
-                    <td class="px-2 py-5 sm:py-7 text-center">
-                        <span class="status-indicator inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2 rounded-full text-[9px] font-black uppercase tracking-widest shadow-inner">--</span>
+                    <td class="px-2 py-5 text-center">
+                        <span class="status-indicator inline-flex items-center justify-center px-4 py-2 rounded-full text-[8px] font-black uppercase tracking-widest shadow-inner">--</span>
                     </td>
-                    <td class="px-2 py-5 sm:py-7 text-center no-export">
-                        <div class="flex items-center justify-center gap-1 sm:gap-2.5">
-                            ${Object.values(STATUSES).map(st => `<button class="status-btn w-8 h-8 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center text-[9px] font-black border-2 border-slate-50 dark:border-white/5 hover:border-egg-yolk transition-all active:scale-90 ${status === st.id ? `active-${st.id}` : 'text-slate-300'}" data-status="${st.id}">${st.id}</button>`).join('')}
-                            <div class="w-px h-6 sm:h-8 bg-slate-100 dark:bg-white/5 mx-0.5"></div>
-                            <button class="delete-btn p-1.5 sm:p-3 text-slate-200 hover:text-red-500 rounded-2xl transition-all"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <td class="px-2 py-5 text-center no-export">
+                        <div class="flex items-center justify-center gap-1">
+                            ${Object.values(STATUSES).map(st => `<button class="status-btn w-7 h-7 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-[8px] font-black border-2 border-slate-50 dark:border-white/5 transition-all ${status === st.id ? `active-${st.id}` : 'text-slate-300'}" data-status="${st.id}">${st.id}</button>`).join('')}
+                            <button class="delete-btn ml-1 p-2.5 text-slate-200 hover:text-red-500 rounded-xl transition-all"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                         </div>
                     </td>
                 </tr>`;
-        }).join('');
+        });
+        $('#studentList').innerHTML = html;
 
         $$('#studentList tr').forEach(updateRowIndicator);
         updateSummary();
         updateProgress();
-    };
-
-    const setupKeyboardSupport = () => {
-        const bindKey = (id, fn) => { const el = $(id); if(el) el.addEventListener('keydown', (e) => { if(e.key === 'Enter') fn(); }); };
-        bindKey('#studentName', () => $('#addStudentBtn').click());
-        bindKey('#newClassName', () => $('#addClassBtn').click());
-        bindKey('#newPassword', () => $('#saveSettingsBtn').click());
-        bindKey('#password', () => $('#login-form').dispatchEvent(new Event('submit')));
-        
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const activeModal = $('.modal-backdrop.active');
-                if (activeModal && activeModal.id === 'confirmationModal') {
-                    const btn = $('#confirmButton');
-                    if (btn) { e.preventDefault(); btn.click(); }
-                }
-            }
-            if (e.key === 'Escape') closeModal();
-        });
     };
 
     const updateRowIndicator = (row) => {
@@ -514,14 +407,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const sid = row.dataset.id;
         const status = cls.history[date]?.[sid] || '';
         const ind = row.querySelector('.status-indicator');
-        
         if (status && STATUSES[status]) {
             const s = STATUSES[status];
             ind.textContent = s.label;
-            ind.className = `status-indicator inline-flex items-center justify-center px-3 sm:px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest ${s.light} ${s.textLight} ${s.dark} ${s.textDark}`;
+            ind.className = `status-indicator inline-flex items-center justify-center px-4 py-2 rounded-full text-[8px] font-black uppercase tracking-widest ${s.light} ${s.textLight} ${s.dark} ${s.textDark}`;
         } else {
             ind.textContent = '--';
-            ind.className = 'status-indicator inline-flex items-center justify-center px-3 sm:px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest bg-gray-100 dark:bg-white/5 text-gray-300';
+            ind.className = 'status-indicator inline-flex items-center justify-center px-4 py-2 rounded-full text-[8px] font-black uppercase tracking-widest bg-gray-100 dark:bg-white/5 text-gray-300';
         }
     };
 
@@ -531,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const vals = Object.values(daily);
         $('#attendance-summary').innerHTML = Object.values(STATUSES).map(s => {
             const c = vals.filter(v => v === s.id).length;
-            return `<div class="flex items-center gap-2 px-4 py-2.5 rounded-3xl border-2 border-slate-50 dark:border-indigo-green/20 bg-white dark:bg-black/20 shadow-lg"><div class="w-3 h-3 rounded-full ${s.color}"></div><span class="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-white/50">${s.label}: ${c}</span></div>`;
+            return `<div class="flex items-center gap-2 px-3 py-2 rounded-full border border-slate-100 dark:border-indigo-green/20 bg-white dark:bg-black/20 shadow-md"><div class="w-2.5 h-2.5 rounded-full ${s.color}"></div><span class="text-[8px] font-black uppercase tracking-widest text-slate-500 dark:text-white/40">${s.label}: ${c}</span></div>`;
         }).join('');
     };
 
@@ -548,22 +440,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bind('#login-form', 'submit', (e) => {
             e.preventDefault();
-            if ($('#password').value === atob(data.password)) { sessionStorage.setItem(LOGGED_IN_KEY, 'true'); checkLogin(); }
-            else { showToast("ACESSO NEGADO", "error"); }
+            if ($('#password').value === atob(data.password)) { sessionStorage.setItem(LOGGED_IN_KEY, 'true'); checkLogin(); showToast("BEM-VINDO"); }
+            else { showToast("SENHA INCORRETA", "error"); }
         });
 
-        bind('#logout-btn', 'click', () => showConfirmationModal('Sair', 'DESEJA SAIR?', () => { sessionStorage.removeItem(LOGGED_IN_KEY); location.reload(); }));
+        bind('#logout-btn', 'click', () => showConfirmationModal('Sair', 'DESEJA SAIR DO SISTEMA?', () => { sessionStorage.removeItem(LOGGED_IN_KEY); location.reload(); }));
         bind('#attendanceDate', 'change', renderAll);
         bind('#class-selector', 'change', (e) => { activeClassId = e.target.value; renderAll(); saveData(true); });
         bind('#searchStudent', 'input', renderStudentList);
 
         bind('#addStudentBtn', 'click', () => {
-            const name = $('#studentName').value.trim();
+            const name = cleanString($('#studentName').value);
             const cls = getActiveClass();
             if (name && cls) {
-                if(cls.students.some(s => s.name === name.toUpperCase())) return showToast("NOME JÁ EXISTE", "error");
-                cls.students.push({ id: `s_${Date.now()}`, name: name.toUpperCase() });
+                if(cls.students.some(s => s.name === name)) return showToast("JÁ EXISTE", "error");
+                cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: name });
                 $('#studentName').value = ''; renderStudentList(); saveData(true);
+                showToast("ADICIONADO");
             }
         });
 
@@ -575,14 +468,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.classList.contains('status-btn')) {
                 const d = $('#attendanceDate').value;
                 if (!cls.history[d]) cls.history[d] = {};
-                cls.history[d][sid] = (cls.history[d][sid] === btn.dataset.status) ? '' : btn.dataset.status;
-                renderStudentList(); saveData();
+                const newStatus = (cls.history[d][sid] === btn.dataset.status) ? '' : btn.dataset.status;
+                cls.history[d][sid] = newStatus;
+                $$(`tr[data-id="${sid}"] .status-btn`).forEach(b => {
+                    b.className = b.className.replace(/active-\w/g, '').trim();
+                    if (b.dataset.status === newStatus) b.classList.add(`active-${newStatus}`);
+                });
+                updateRowIndicator(row);
+                updateSummary();
+                saveData();
             } else if (btn.classList.contains('delete-btn')) {
-                showConfirmationModal('Excluir', 'REMOVER ALUNO?', () => {
-                    const idx = cls.students.findIndex(x => x.id === sid);
-                    lastActionUndo = { type: 'del', clsId: activeClassId, student: cls.students[idx], idx };
-                    cls.students.splice(idx, 1);
-                    renderStudentList(); saveData(true); showUndoToast('Removido');
+                showConfirmationModal('Excluir', 'REMOVER ESTE ALUNO?', () => {
+                    const studentIdx = cls.students.findIndex(x => x.id === sid);
+                    lastActionUndo = { type: 'del', clsId: activeClassId, student: cls.students[studentIdx], idx: studentIdx };
+                    cls.students.splice(studentIdx, 1);
+                    renderStudentList(); saveData(true); showUndoToast("Aluno Removido");
                 });
             }
         });
@@ -591,11 +491,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.classList.contains('edit-name')) {
                 const sid = e.target.closest('tr').dataset.id;
                 const cls = getActiveClass();
-                const n = e.target.textContent.trim();
+                const n = cleanString(e.target.textContent);
                 const s = cls.students.find(x => x.id === sid);
-                if (n && s && s.name !== n) { s.name = n.toUpperCase(); saveData(); }
+                if (n && s && s.name !== n) { s.name = n; saveData(); }
+                else if (!n && s) { e.target.textContent = s.name; } // Evita apagar se ficar vazio
             }
-        });
+        }, true);
 
         bind('#markAllPresentBtn', 'click', () => massStatus('P'));
         bind('#markAbsenteesBtn', 'click', () => massStatus('F', true));
@@ -604,117 +505,26 @@ document.addEventListener('DOMContentLoaded', () => {
         bind('#manage-classes-btn', 'click', () => { renderClassList(); openModal('#manageClassesModal'); });
         bind('#pasteListBtn', 'click', () => openModal('#pasteModal'));
         bind('#settings-btn', 'click', () => openModal('#settingsModal'));
-        bind('#reports-btn', 'click', openReports);
-        bind('#diary-btn', 'click', openDiary);
-        bind('#charts-btn', 'click', openCharts);
-
         bind('#importCsvInput', 'change', handleCsv);
-        bind('#importDataInput', 'change', handleBackupImport);
-
-        bind('#downloadTemplateBtn', 'click', () => {
-            const csvContent = "Nome;Numero\nALICE OLIVEIRA;1\nBRUNO SANTOS;2\nCARLOS EDUARDO;3\nDANIELA COSTA;4";
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "modelo_alunos_diario.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-        
-        bind('#exportDataBtn', 'click', () => {
-            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `backup_diario.json`; a.click();
-        });
-
-        bind('#confirmPasteButton', 'click', () => {
-            const names = $('#pasteTextarea').value.split('\n').map(n => n.trim()).filter(n => n);
-            const cls = getActiveClass();
-            if (names.length === 0) return showToast("NENHUM NOME DETECTADO", "error");
-            names.forEach(n => cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: n.toUpperCase() }));
-            $('#pasteTextarea').value = ''; closeModal(); renderStudentList(); saveData(true);
-            showToast(`${names.length} ALUNOS ADICIONADOS`);
-        });
-
-        bind('#saveSettingsBtn', 'click', () => {
-            const np = $('#newPassword').value;
-            if (np) {
-                if (np.length < 4) return showToast("MÍNIMO 4 DÍGITOS", "error");
-                data.password = btoa(np); $('#newPassword').value = ''; showToast("Senha Salva");
-            }
-            saveData(true); closeModal();
-        });
-
+        bind('#downloadTemplateBtn', 'click', downloadTemplate);
+        bind('#confirmPasteButton', 'click', confirmPaste);
         bind('#exportPdfBtn', 'click', exportPdf);
-        $$('.modal-close-btn').forEach(b => b.addEventListener('click', closeModal));
         bind('#undo-btn', 'click', handleUndo);
-        bind('#prev-month-btn', 'click', () => { diaryState.month--; renderDiary(); });
-        bind('#next-month-btn', 'click', () => { diaryState.month++; renderDiary(); });
 
+        $$('.modal-close-btn').forEach(b => b.addEventListener('click', closeModal));
+        
         bind('#addClassBtn', 'click', () => {
-            const n = $('#newClassName').value.trim();
+            const n = cleanString($('#newClassName').value);
             if (n) {
-                const nc = { id: `c_${Date.now()}`, name: n.toUpperCase(), students: [], history: {} };
-                data.classes.push(nc); activeClassId = nc.id; $('#newClassName').value = '';
-                updateClassSelector(); renderClassList(); renderAll(); saveData(true);
+                data.classes.push({ id: `c_${Date.now()}`, name: n, students: [], history: {} });
+                $('#newClassName').value = ''; renderClassList(); updateClassSelector(); saveData(true);
             }
-        });
-
-        bind('#deleteAllStudentsBtn', 'click', () => {
-            showConfirmationModal('ZERAR', 'APAGAR TODOS OS ALUNOS?', () => {
-                const cls = getActiveClass();
-                lastActionUndo = { type: 'del_all', clsId: activeClassId, students: [...cls.students] };
-                cls.students = []; renderStudentList(); saveData(true); showUndoToast('Lista zerada');
-            });
         });
 
         bind('#confirmButton', 'click', () => { 
-            if (currentConfirmCallback) { 
-                currentConfirmCallback(); 
-                currentConfirmCallback = null; 
-            } 
-            // Fecha apenas o modal de confirmação primeiro
+            if (currentConfirmCallback) { currentConfirmCallback(); currentConfirmCallback = null; } 
             $('#confirmationModal').classList.remove('active');
-            // Se não houver mais modais ativos, libera o scroll
-            if (!$('.modal-backdrop.active')) {
-                $('#app-body').classList.remove('no-scroll');
-            }
         });
-
-        bind('#class-title-header', 'blur', (e) => { const cls = getActiveClass(); const n = e.target.textContent.trim(); if (n && cls && cls.name !== n) { cls.name = n.toUpperCase(); updateClassSelector(); saveData(true); } });
-        bind('#sort-by-name', 'click', () => handleSort('name'));
-        bind('#sort-by-status', 'click', () => handleSort('status'));
-    };
-
-    window.filterByStatus = (e, status) => {
-        currentFilter = status;
-        $$('.filter-btn').forEach(b => { 
-            b.classList.remove('active', 'bg-indigo-green', 'text-egg-yolk'); 
-            b.classList.add('bg-slate-100', 'dark:bg-white/5', 'text-slate-400'); 
-        });
-        const target = e.currentTarget;
-        target.classList.add('active', 'bg-indigo-green', 'text-egg-yolk');
-        target.classList.remove('bg-slate-100', 'dark:bg-white/5', 'text-slate-400');
-        renderStudentList();
-    };
-
-    const handleUndo = () => {
-        if (!lastActionUndo) return;
-        const cls = data.classes.find(c => c.id === lastActionUndo.clsId);
-        if (lastActionUndo.type === 'del') cls.students.splice(lastActionUndo.idx, 0, lastActionUndo.student);
-        else if (lastActionUndo.type === 'del_all') cls.students = lastActionUndo.students;
-        lastActionUndo = null; $('#undo-toast').classList.remove('show');
-        renderStudentList(); saveData(true);
-    };
-
-    const handleBackupImport = (e) => {
-        const file = e.target.files[0]; if (!file) return;
-        const r = new FileReader();
-        r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); if (d.classes) { data = d; location.reload(); } } catch(err) { showToast("Erro no backup", "error"); } };
-        r.readAsText(file);
     };
 
     const massStatus = (s, onlyEmpty = false) => {
@@ -728,159 +538,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderClassList = () => {
         $('#classList').innerHTML = data.classes.map(c => `
-            <div class="flex items-center justify-between p-5 bg-slate-100/50 dark:bg-white/5 rounded-[2rem] border-2 border-transparent hover:border-egg-yolk transition-all">
-                <span class="font-black text-xs uppercase tracking-widest text-indigo-green dark:text-white text-center flex-grow">${c.name}</span>
-                <button onclick="window.removeTurma('${c.id}')" class="text-red-500 p-3 hover:bg-red-500 hover:text-white rounded-2xl transition-all shadow-sm">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
+            <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-egg-yolk transition-all">
+                <span class="font-black text-[11px] uppercase text-indigo-green dark:text-white">${c.name}</span>
+                <button onclick="window.removeTurma('${c.id}')" class="text-red-500 p-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
             </div>
         `).join('');
     };
 
     window.removeTurma = (id) => {
         if (data.classes.length <= 1) return showToast("MÍNIMO 1 TURMA", "error");
-        showConfirmationModal('Remover', 'EXCLUIR ESTA TURMA?', () => { 
+        showConfirmationModal('Apagar Turma', 'TODOS OS DADOS SERÃO PERDIDOS. CONFIRMA?', () => { 
             data.classes = data.classes.filter(c => c.id !== id); 
             if (activeClassId === id) activeClassId = data.classes[0].id; 
-            updateClassSelector(); 
-            renderClassList(); 
-            renderAll(); 
-            saveData(true); 
-            showToast("Turma Removida");
+            updateClassSelector(); renderClassList(); renderAll(); saveData(true); 
         });
     };
 
-    const openReports = () => {
-        const cls = getActiveClass();
-        const stats = cls.students.map(s => {
-            let p = 0, f = 0, j = 0;
-            Object.values(cls.history).forEach(day => { if (day[s.id] === 'P') p++; else if (day[s.id] === 'F') f++; else if (day[s.id] === 'J') j++; });
-            const tot = p + f + j;
-            return { name: s.name, p, f, j, perc: tot > 0 ? ((p / tot) * 100).toFixed(1) : "0.0" };
-        }).sort((a,b) => b.perc - a.perc);
-
-        $('#reports-content').innerHTML = `
-            <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-center text-[10px] sm:text-sm border-collapse">
-                    <thead class="bg-indigo-green/10 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-indigo-green dark:text-egg-yolk">
-                        <tr><th class="p-4 sm:p-6 text-left">ALUNO</th><th class="p-2 sm:p-4">P</th><th class="p-2 sm:p-4">F</th><th class="p-2 sm:p-4 text-right">MÉDIA</th></tr>
-                    </thead>
-                    <tbody class="divide-y dark:divide-indigo-green/20">
-                        ${stats.map(s => `<tr><td class="p-4 sm:p-6 font-bold uppercase text-[9px] sm:text-xs text-indigo-green dark:text-white text-left truncate max-w-[150px]">${s.name}</td><td class="p-2 sm:p-4 font-black text-green-600">${s.p}</td><td class="p-2 sm:p-4 font-black text-red-600">${s.f}</td><td class="p-2 sm:p-4 text-right"><span class="px-3 py-1 rounded-full ${s.perc >= 75 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} font-black shadow-sm">${s.perc}%</span></td></tr>`).join('')}
-                    </tbody>
-                </table>
-            </div>`;
-        openModal('#reportsModal');
+    const handleUndo = () => {
+        if (!lastActionUndo) return;
+        const cls = data.classes.find(c => c.id === lastActionUndo.clsId);
+        if (lastActionUndo.type === 'del') cls.students.splice(lastActionUndo.idx, 0, lastActionUndo.student);
+        else if (lastActionUndo.type === 'del_all') cls.students = lastActionUndo.students;
+        lastActionUndo = null; $('#undo-toast').classList.remove('show');
+        renderStudentList(); saveData(true);
     };
 
-    const renderDiary = () => {
+    const downloadTemplate = () => {
+        const csv = "\uFEFFNome;Numero\nMARIA SILVA;1\nJOÃO SOUZA;2\nANA SANTOS;3";
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "modelo_diario.csv"; a.click();
+    };
+
+    const confirmPaste = () => {
+        const names = $('#pasteTextarea').value.split('\n').map(n => cleanString(n)).filter(n => n);
         const cls = getActiveClass();
-        const date = new Date(diaryState.year, diaryState.month, 1);
-        diaryState.year = date.getFullYear(); diaryState.month = date.getMonth();
-        $('#diary-month-year').textContent = date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-        const days = new Date(diaryState.year, diaryState.month + 1, 0).getDate();
-        
-        let h = `<table class="w-full text-[9px] sm:text-[10px] text-center border-collapse"><thead class="bg-indigo-green/10 sticky top-0 z-30"><tr><th class="p-4 sm:p-6 border-b sticky-col bg-slate-50 dark:bg-black/90 text-left min-w-[140px] sm:min-w-[200px] z-40 uppercase font-black text-indigo-green dark:text-egg-yolk">Estudantes</th>`;
-        for (let d = 1; d <= days; d++) {
-            const dow = new Date(diaryState.year, diaryState.month, d).getDay();
-            h += `<th class="p-1 sm:p-2 border-b min-w-[30px] sm:min-w-[40px] font-black ${dow === 0 || dow === 6 ? 'bg-indigo-green/5 text-indigo-green/20' : 'text-slate-400'}">${d}</th>`;
-        }
-        h += `</tr></thead><tbody class="divide-y dark:divide-indigo-green/10">`;
-        cls.students.sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-            h += `<tr class="hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all"><td class="p-4 sm:p-6 font-bold sticky-col bg-white dark:bg-[#021112] z-20 text-left uppercase text-[9px] sm:text-xs truncate border-r dark:border-indigo-green/20 text-indigo-green dark:text-white">${s.name}</td>`;
-            for (let d = 1; d <= days; d++) {
-                const ds = `${diaryState.year}-${String(diaryState.month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                const st = cls.history[ds]?.[s.id] || '';
-                h += `<td class="p-1 sm:p-2 font-black ${st ? STATUSES[st].color + ' text-white rounded-lg scale-90' : 'text-slate-100 dark:text-white/5'}">${st || '-'}</td>`;
+        let added = 0;
+        names.forEach(n => { 
+            if (!cls.students.some(s => s.name === n)) {
+                cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: n }); 
+                added++;
             }
-            h += `</tr>`;
         });
-        $('#diary-content').innerHTML = h + `</tbody></table>`;
-    };
-
-    const openDiary = () => { renderDiary(); openModal('#diaryModal'); };
-    
-    const openCharts = () => {
-        const cls = getActiveClass();
-        const stats = { P: 0, F: 0, J: 0 };
-        Object.values(cls.history).forEach(day => { Object.values(day).forEach(v => { if(stats[v] !== undefined) stats[v]++; }); });
-        const ctx = $('#attendance-chart').getContext('2d');
-        if (charts.att) charts.att.destroy();
-        charts.att = new Chart(ctx, {
-            type: 'doughnut',
-            data: { labels: ['P', 'F', 'J'], datasets: [{ data: [stats.P, stats.F, stats.J], backgroundColor: ['#16a34a', '#dc2626', '#d97706'], borderWidth: 4, borderColor: document.documentElement.classList.contains('dark') ? '#021112' : '#ffffff', hoverOffset: 15 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: document.documentElement.classList.contains('dark') ? '#FFB800' : '#0D5C63', font: { weight: 'bold', size: 10 }, padding: 20, usePointStyle: true } } }, cutout: '70%' }
-        });
-        openModal('#chartsModal');
-    };
-
-    const exportPdf = () => {
-        const element = $('#capture-area');
-        const opt = { margin: 0.2, filename: `diario.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
-        html2pdf().set(opt).from(element).save(); showToast("PDF GERADO");
+        $('#pasteTextarea').value = ''; closeModal(); renderStudentList(); saveData(true); 
+        showToast(`${added} ADICIONADOS`);
     };
 
     const handleCsv = (e) => {
         const file = e.target.files[0]; if (!file) return;
         const reader = new FileReader();
         reader.onload = (ev) => {
-            const lines = ev.target.result.split(/\r?\n/).filter(l => l.trim() !== "");
-            const cls = getActiveClass(); let added = 0;
+            let content = ev.target.result.replace(/^\uFEFF/, ""); 
+            const lines = content.split(/\r?\n/).filter(l => l.trim() !== "");
+            const cls = getActiveClass();
+            let added = 0;
             lines.forEach(l => {
-                let n = l.includes(';') ? l.split(';')[0] : l.split(',')[0];
-                n = n.replace(/"/g, '').trim();
-                if (n && !["nome", "aluno", "name", "numero"].includes(n.toLowerCase())) { 
-                    if (!cls.students.some(s => s.name === n.toUpperCase())) {
-                        cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: n.toUpperCase() }); 
+                const parts = l.includes(';') ? l.split(';') : l.split(',');
+                let n = cleanString(parts[0]);
+                if (n && !["NOME", "ALUNO", "ESTUDANTE", "NAME"].includes(n)) { 
+                    if (!cls.students.some(s => s.name === n)) {
+                        cls.students.push({ id: `s_${Date.now()}_${Math.random()}`, name: n });
                         added++;
                     }
                 }
             });
+            e.target.value = "";
             if (added > 0) { closeModal(); renderStudentList(); saveData(true); showToast(`${added} IMPORTADOS`); }
             else { showToast("NENHUM NOME NOVO", "error"); }
-            e.target.value = "";
         };
-        reader.readAsText(file);
+        reader.readAsText(file, "UTF-8");
     };
 
-    const openModal = (s) => { const m = $(s); if (m) { m.classList.add('active'); $('#app-body').classList.add('no-scroll'); } };
-    const closeModal = () => { 
-        $$('.modal-backdrop').forEach(m => m.classList.remove('active')); 
-        if (!$('#login-screen').classList.contains('hidden')) return; 
-        $('#app-body').classList.remove('no-scroll'); 
+    const exportPdf = () => {
+        const opt = { margin: 0.5, filename: `Diario_${activeClassId}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+        html2pdf().set(opt).from($('#capture-area')).save(); showToast("PDF GERADO");
     };
+
+    const openModal = (s) => { $(s).classList.add('active'); $('#app-body').classList.add('no-scroll'); };
+    const closeModal = () => { $$('.modal-backdrop').forEach(m => m.classList.remove('active')); if (sessionStorage.getItem(LOGGED_IN_KEY) === 'true') $('#app-body').classList.remove('no-scroll'); };
     
     const showToast = (m, type = 'success') => {
         const t = $('#toast'); t.textContent = m;
-        t.className = `toast show fixed bottom-10 left-1/2 glass text-egg-yolk py-4 px-10 rounded-full shadow-3xl font-black text-[9px] uppercase tracking-widest text-center border-2 border-egg-yolk/40 min-w-[240px] ${type === 'error' ? 'bg-red-900' : 'bg-indigo-green/90'}`;
+        t.className = `toast show fixed bottom-8 left-1/2 bg-indigo-green text-egg-yolk py-4 px-10 rounded-full shadow-2xl font-black text-[10px] uppercase tracking-widest text-center border border-egg-yolk/30 min-w-[260px] ${type === 'error' ? 'bg-red-900 border-red-500' : ''}`;
         setTimeout(() => t.classList.remove('show'), 2500);
     };
 
     const showUndoToast = (m) => { $('#undo-message').textContent = m; $('#undo-toast').classList.add('show'); setTimeout(() => $('#undo-toast').classList.remove('show'), 6000); };
-    const showConfirmationModal = (title, msg, onConfirm) => { 
-        $('#modalTitle').textContent = title; 
-        $('#modalMessage').textContent = msg; 
-        currentConfirmCallback = onConfirm; 
-        openModal('#confirmationModal'); 
-    };
+    const showConfirmationModal = (title, msg, onConfirm) => { $('#modalTitle').textContent = title; $('#modalMessage').textContent = msg; currentConfirmCallback = onConfirm; openModal('#confirmationModal'); };
 
     const initTheme = () => {
-        const btn = $('#theme-toggle-btn');
-        const update = () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            btn.innerHTML = isDark ? 
-                `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>` :
-                `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
-        };
         if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-        update();
-        btn.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); update(); if($('#chartsModal').classList.contains('active')) openCharts(); });
+        updateThemeBtn();
+        $('#theme-toggle-btn').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeBtn();
+        });
     };
 
-    const handleSort = (key) => {
-        if (sortState.key === key) sortState.asc = !sortState.asc; else { sortState.key = key; sortState.asc = true; }
-        $$('.sortable-header span').forEach(s => s.textContent = '');
-        const target = $(`#sort-by-${key} span`); if(target) target.textContent = sortState.asc ? '▲' : '▼';
+    const updateThemeBtn = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        $('#theme-toggle-btn').innerHTML = isDark ? 
+            `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>` :
+            `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+    };
+
+    window.filterByStatus = (e, status) => {
+        currentFilter = status;
+        $$('.filter-btn').forEach(b => b.classList.remove('active', 'bg-indigo-green', 'text-egg-yolk'));
+        e.currentTarget.classList.add('active', 'bg-indigo-green', 'text-egg-yolk');
         renderStudentList();
     };
 
